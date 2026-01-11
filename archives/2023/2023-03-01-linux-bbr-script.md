@@ -13,7 +13,7 @@ wget -N --no-check-certificate "https://gist.github.com/zeruns/a0ec603f20d1b86de
 如果国内 VPS 无法连接，可使用本站镜像：
 
 ```bash
-wget -N --no-check-certificate "https://xcopter.cc/src/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
+wget -N --no-check-certificate "https://xcopter.cc/sh/tcp.sh" && chmod +x tcp.sh && ./tcp.sh
 ```
 
 **2. 运行完成将出现以下菜单，可根据需要来安装相对应的核心，之后再打开加速功能。**
