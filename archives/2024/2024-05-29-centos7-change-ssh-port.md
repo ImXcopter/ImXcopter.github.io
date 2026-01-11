@@ -12,7 +12,7 @@ chmod +x ssh_change_port.sh
 ./ssh_change_port.sh
 ```
 
-将下面的脚本保存为change_22_port.sh：
+将下面的脚本保存为ssh_change_port.sh：
 
 ```bash
 #!/bin/bash
