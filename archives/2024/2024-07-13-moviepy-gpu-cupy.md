@@ -1,6 +1,6 @@
 # moviepy用GPU加速的方法 - cupy
 
-首先安装CUPY，安装方法自行百度！
+首先安装cupy，安装方法自行百度！
 
 ## moviepy默认的安装路径
 
