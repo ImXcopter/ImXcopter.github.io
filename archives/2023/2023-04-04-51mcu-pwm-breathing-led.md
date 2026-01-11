@@ -4,7 +4,7 @@
 
 代码已经在 KST-51 v1.3.2 开发板验证通过。
 
-> [点击播放视频](https://attachment.xcopter.cc/2023/2023-04-04-51mcu-pwm-breathing-led.mp4)
+> [点击播放效果视频](https://attachment.xcopter.cc/2023/2023-04-04-51mcu-pwm-breathing-led.mp4)
 
 ```c
 #include <REGX52.H>
