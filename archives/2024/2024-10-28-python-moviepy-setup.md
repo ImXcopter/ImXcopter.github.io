@@ -22,7 +22,7 @@ pip install moviepy
 
 ## 5.安装ImageMagick
 
-并且将convert.exe拷贝至安装目录：[convert.zip](https://attach.xcopter.cc/convert.zip)
+并且将convert.exe拷贝至安装目录：[convert.zip](https://attachment.xcopter.cc/2024/convert.zip)
 
 ## 6.安装pytorch
 
@@ -60,7 +60,7 @@ pip install --upgrade pyannote.audio
 
 ## 13.替换Moviepy的Cupy加速版
 
-[moviepy](https://attach.xcopter.cc/moviepy.zip)
+[moviepy](https://attachment.xcopter.cc/2024/moviepy.zip)
 
 ## 正常运行的各类依赖的版本
 
