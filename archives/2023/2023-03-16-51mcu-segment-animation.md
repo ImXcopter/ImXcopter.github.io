@@ -2,7 +2,7 @@
 
 **效果展示：**
 
-> 效果视频：https://xcopter.cc/wp-content/uploads/2023/03/20230316-138.mp4
+> [点击播放效果视频](https://attachment.xcopter.cc/2023/2023-03-16-51mcu-segment-animation.mp4)
 
 由于摄像头拍摄帧率的缘故，正好可以在视频中看到逐行刷新的效果。本代码已经在 KST-51 v1.3.2 开发板验证通过，代码如下：
 
