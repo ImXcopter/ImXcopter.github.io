@@ -1,6 +1,6 @@
 # 51 单片机 - LED 灯显示二进制代码进阶版
 
-之前写过一个 [51 单片机 - LED 灯显示二进制代码](https://xcopter.cc/archives/2023/2023-03-14-51mcu-led-binary-display.html/)，为了锻炼一下综合能力，这里又加了一些花里胡哨的效果进去。
+之前写过一个 [51 单片机 - LED 灯显示二进制代码](https://xcopter.cc/archives/2023/2023-03-14-51mcu-led-binary-display.html)，为了锻炼一下综合能力，这里又加了一些花里胡哨的效果进去。
 
 这里提一下 coding 过程遇到的坑：在只有 0 和 1 两个状态的时候，或者说想使用取反运算符得到 0 或者 1 的时候，尽量选择 bit 形变量。如果使用了非 bit 形的变量，例如使用了 unsigned char 形的变量，需要手动置 1 或者手动置 0，就无法使用 ~ 取反运算得到 0 或者 1 的结果了。
 
@@ -8,7 +8,7 @@
 
 ![运行效果](/static/2023/2023-03-15-51mcu-led-binary-advanced_001.png)
 
-> 效果视频：https://xcopter.cc/wp-content/uploads/2023/03/20230315-275.mp4
+> [点击播放效果视频](https://attachment.xcopter.cc/2023/2023-03-15-51mcu-led-binary-advanced.mp4)
 
 ```c
 #include <REGX52.H>
