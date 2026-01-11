@@ -60,7 +60,7 @@ pip install --upgrade pyannote.audio
 
 ## 13.替换Moviepy的Cupy加速版
 
-[moviepy](https://xcopter.cc/wp-content/uploads/2024/10/20241028-46.zip)
+[moviepy](/static/2024/moviepy.zip)
 
 ## 正常运行的各类依赖的版本
 
