@@ -1,6 +1,6 @@
 # 51 单片机 - 1602 液晶显示游动字体 Coding 练习
 
-效果展示：https://xcopter.cc/wp-content/uploads/2023/04/20230410-150.mp4
+[点击播放效果展示视频](https://attachment.xcopter.cc/2023/2023-04-10-51mcu-lcd1602-scrolling-text.mp4)
 
 本程序代码为《手把手教你学 51 单片机》13.2 的例程修改版，主程序中将 2 个不同的字符串数组分别赋值，本代码已经在 KST-51 v1.3.2 开发板验证通过。
 
