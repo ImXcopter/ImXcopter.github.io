@@ -1,9 +1,9 @@
-# 51单片机 - 秒表计时代码
+# 51 单片机 - 秒表计时代码
 
-**手撸一遍代码，加深记忆。就不写注释了。使用的是51单片机的定时器0，进中断来刷新数码管。**
+**手撸一边代码，加深记忆。就不写注释了。使用的是 51 单片机的定时器 0，进中断来刷新数码管。**
 
-```text
-#include <reg52.h>
+```c
+#include <REGX52.H>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;
@@ -15,14 +15,16 @@ unsigned char code LedChar[16] = {
     0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8,
     0x80, 0x90, 0x88, 0x83, 0xC6, 0xA1, 0x86, 0x8E
 };
+
 unsigned char LedBuff[6] = {
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 };
+
 unsigned int cnt = 0;
 bit flag1s = 0;
 unsigned char i = 0;
 
-void main(){
+void main() {
     unsigned long sec = 0;
 
     EA = 1;
@@ -35,8 +37,8 @@ void main(){
     ET0 = 1;
     TR0 = 1;
 
-    while(1){
-        if(flag1s){
+    while (1) {
+        if (flag1s) {
             flag1s = 0;
             sec++;
             LedBuff[0] = LedChar[sec % 10];
@@ -49,16 +51,16 @@ void main(){
     }
 }
 
-void interruptTimer0() interrupt 1{
+void interruptTimer0() interrupt 1 {
     TH0 = 0xFC;
     TL0 = 0x67;
     cnt++;
-    if(cnt >= 1000){
+    if (cnt >= 1000) {
         cnt = 0;
         flag1s = 1;
     }
     P0 = 0xFF;
-    switch(i){
+    switch (i) {
         case 0: ADDR2 = 0; ADDR1 = 0; ADDR0 = 0; i++; P0 = LedBuff[0]; break;
         case 1: ADDR2 = 0; ADDR1 = 0; ADDR0 = 1; i++; P0 = LedBuff[1]; break;
         case 2: ADDR2 = 0; ADDR1 = 1; ADDR0 = 0; i++; P0 = LedBuff[2]; break;

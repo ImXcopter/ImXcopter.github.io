@@ -1,70 +1,70 @@
 # Python下moviepy加速的环境配置
 
-## 1. 安装CUDA12.4版本
+## 1.安装CUDA12.4版本
 
-具体版本要看Pytorch支持到哪个版本。
+具体要看Pytorch支持到哪个版本。
 
-## 2. 安装Python
+## 2.安装Python
 
-版本为Python 3.12.7
+版本为Python 3.12.7。
 
-## 3. 升级pip
+## 3.升级pip
 
 ```bash
 pip install --upgrade pip
 ```
 
-## 4. 安装moviepy
+## 4.安装moviepy
 
 ```bash
 pip install moviepy
 ```
 
-## 5. 安装ImageMagick
+## 5.安装ImageMagick
 
-将convert.exe拷贝至安装目录: [convert.zip](https://xcopter.cc/wp-content/uploads/2024/10/20241028-31.zip)
+并且将convert.exe拷贝至安装目录：[convert.zip](https://xcopter.cc/wp-content/uploads/2024/10/20241028-31.zip)
 
-## 6. 安装pytorch
+## 6.安装pytorch
 
-## 7. 安装cupy
+## 7.安装cupy
 
-## 8. 安装openai whisper
+## 8.安装openai whisper
 
 ```bash
 pip install openai-whisper
 ```
 
-## 9. 安装whisperx
+## 9.安装whisperx
 
 ```bash
 pip install whisperx
 ```
 
-## 10. 安装chardet
+## 10.安装chardet
 
 ```bash
 pip install chardet
 ```
 
-## 11. 安装pydub
+## 11.安装pydub
 
 ```bash
 pip install pydub
 ```
 
-## 12. 升级pyannote.audio
+## 12.升级pyannote.audio
 
 ```bash
 pip install --upgrade pyannote.audio
 ```
 
-## 13. 替换Moviepy的Cupy加速版
+## 13.替换Moviepy的Cupy加速版
 
 [moviepy](https://xcopter.cc/wp-content/uploads/2024/10/20241028-46.zip)
 
-以下是正常运行的各类依赖的版本：
+## 正常运行的各类依赖的版本
 
-```text
+```
 C:\Users\Administrator>pip list
 Package Version
 ----------------------- ------------
@@ -154,7 +154,7 @@ pyparsing 3.1.4
 pyreadline3 3.5.2
 python-dateutil 2.9.0.post0
 pytorch-lightning 2.4.0
-pytorch-metric-learning 2.6.0
+pytorch-metric-learning 2.6.4
 pytz 2024.2
 PyYAML 6.0.2
 regex 2024.9.11

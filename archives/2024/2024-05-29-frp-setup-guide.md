@@ -118,20 +118,20 @@ transport.useEncryption = true
 
 ## 服务端证书申请步骤
 
-### 1. 创建目录并生成证书
+1. 创建目录并生成证书
 
 ```bash
 mkdir -p /root/frp_cert
 cd /root/frp_cert
 ```
 
-### 2. 设置 IP 变量（替换成你的实际 IP）
+2. 设置 IP 变量（替换成你的实际 IP）
 
 ```bash
 SERVER_IP="x.x.x.x"
 ```
 
-### 3. 创建 OpenSSL 配置文件
+3. 创建 OpenSSL 配置文件
 
 ```bash
 cat > my-openssl.cnf << EOF
@@ -161,14 +161,14 @@ basicConstraints       = CA:true
 EOF
 ```
 
-### 4. 生成 CA 证书
+4. 生成 CA 证书
 
 ```bash
 openssl genrsa -out ca.key 2048
 openssl req -x509 -new -nodes -key ca.key -subj "/CN=FRP-Root-CA" -days 5000 -out ca.crt
 ```
 
-### 5. 生成服务端私钥和证书
+5. 生成服务端私钥和证书
 
 ```bash
 openssl genrsa -out server.key 2048
@@ -185,7 +185,7 @@ openssl x509 -req -days 365 -sha256 \
 	-out server.crt
 ```
 
-### 6. 生成客户端私钥和证书
+6. 生成客户端私钥和证书
 
 ```bash
 openssl genrsa -out client.key 2048
@@ -197,18 +197,18 @@ openssl req -new -sha256 -key client.key \
     -out client.csr
 
 openssl x509 -req -days 365 -sha256 \
-	-in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
+    -in client.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
 	-extfile <(printf "subjectAltName=DNS:frp-client") \
 	-out client.crt
 ```
 
-### 7. 删除临时文件
+7. 删除临时文件
 
 ```bash
 rm server.csr client.csr ca.srl
 ```
 
-### 8. 服务端 frps.toml 中配置
+8. 服务端 frps.toml 中配置
 
 ```toml
 # transport.tls.force 指定是否仅接受 TLS 加密连接。默认值为 false。
@@ -218,7 +218,7 @@ transport.tls.keyFile = "/root/frp_cert/server.key"
 transport.tls.trustedCaFile = "/root/frp_cert/ca.crt"
 ```
 
-### 9. 客户端 frpc.toml 中配置
+9. 客户端 frpc.toml 中配置
 
 将 /root/frp_cert/ca.crt 复制到客户端机器，然后在客户端的 frpc.toml 中配置：
 
@@ -234,9 +234,9 @@ transport.tls.trustedCaFile = "./ca.crt"
 
 新建文件：frps.service
 
-将文件放在目录/etc/systemd/system/frps.service
+将文件放在目录 /etc/systemd/system/frps.service
 
-```toml
+```ini
 [Unit]
 # 服务名称，可自定义
 Description = FRP Server
@@ -254,45 +254,43 @@ WantedBy = multi-user.target
 
 ## Linux服务端自启动命令
 
-### 重新加载配置
+重新加载配置：
 
 ```bash
 systemctl daemon-reload
 ```
 
-### 开机自启动
+开机自启动：
 
 ```bash
 systemctl enable frps
 ```
 
-### 关闭开机自启动
+关闭开机自启动：
 
 ```bash
 systemctl disable frps
 ```
 
-### 重启frps
+重启frps：
 
 ```bash
 systemctl restart frps
 ```
 
-### 停止frps
+停止frps：
 
 ```bash
 systemctl stop frps
 ```
 
-### 查看frps状态
+查看frps状态：
 
 ```bash
 systemctl status frps
 ```
 
----
-
-## 以下是frps_full_example.toml （0.65.0版本）toml文件的中文注释版
+## frps_full_example.toml （0.65.0版本）toml文件的中文注释版
 
 ```toml
 # 此配置文件仅供参考。请勿直接使用此配置运行程序，因为它可能存在各种问题。
@@ -466,9 +464,7 @@ path = "/handler"
 ops = ["NewProxy"]
 ```
 
----
-
-## 以下是frpc_full_example.toml （0.65.0版本）toml文件的中文注释版
+## frpc_full_example.toml （0.65.0版本）toml文件的中文注释版
 
 ```toml
 # 此配置文件仅供参考。请勿直接使用此配置运行程序，因为它可能存在各种问题。

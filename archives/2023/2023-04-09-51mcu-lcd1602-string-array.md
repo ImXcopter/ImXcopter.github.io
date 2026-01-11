@@ -1,9 +1,9 @@
-# 51单片机 - 1602液晶显示字符串（非指针方式）
+# 51 单片机 - 1602 液晶显示字符串（非指针方式）
 
-代码已经在KST-51 v1.3.2开发板验证通过。
+代码已经在 KST-51 v1.3.2 开发板验证通过。
 
-```text
-#include <reg52.h>
+```c
+#include <REGX52.H>
 
 #define LCD1602_DB  P0
 sbit LCD1602_RS = P1^0;
@@ -16,64 +16,68 @@ void LcdWriteDat(unsigned char dat);
 
 void main()
 {
-	unsigned char str[] = "Hello World!";
-	unsigned char i = 0;
+    unsigned char str[] = "Hello World!";
+    unsigned char i = 0;
 
-	InitLcd1602();
+    InitLcd1602();
     LcdSetCursor(0, 0);
     while(str[i] != '\0')
-	{
-		LcdWriteDat(str[i]);
+    {
+        LcdWriteDat(str[i]);
         i++;
-	}
-	while(1);
+    }
+    while(1);
 }
 
 void LcdWaitReady()
 {
-	unsigned char sta;
+    unsigned char sta;
 
-	LCD1602_DB = 0xFF;
-	LCD1602_RS = 0;
-	LCD1602_RW = 1;
-	do	{
-		LCD1602_E = 1;
-		sta = LCD1602_DB;
-		LCD1602_E = 0;
-	}while(sta & 0x80);
+    LCD1602_DB = 0xFF;
+    LCD1602_RS = 0;
+    LCD1602_RW = 1;
+    do {
+        LCD1602_E = 1;
+        sta = LCD1602_DB;
+        LCD1602_E = 0;
+    } while(sta & 0x80);
 }
+
 void LcdWriteCmd(unsigned char cmd)
 {
-	LcdWaitReady();
-	LCD1602_RS = 0;
-	LCD1602_RW = 0;
-	LCD1602_DB = cmd;
-	LCD1602_E = 1;
-	LCD1602_E = 0;
+    LcdWaitReady();
+    LCD1602_RS = 0;
+    LCD1602_RW = 0;
+    LCD1602_DB = cmd;
+    LCD1602_E = 1;
+    LCD1602_E = 0;
 }
+
 void LcdWriteDat(unsigned char dat)
 {
-	LcdWaitReady();
-	LCD1602_RS = 1;
-	LCD1602_RW = 0;
-	LCD1602_DB = dat;
-	LCD1602_E = 1;
-	LCD1602_E = 0;
+    LcdWaitReady();
+    LCD1602_RS = 1;
+    LCD1602_RW = 0;
+    LCD1602_DB = dat;
+    LCD1602_E = 1;
+    LCD1602_E = 0;
 }
+
 void LcdSetCursor(unsigned char x, unsigned char y)
 {
-	unsigned char addr;
-	if(y == 0)
-		addr = 0x00 + x;
-	else
-		addr = 0x40 + x;
-	LcdWriteCmd(addr | 0x80);
+    unsigned char addr;
+    if(y == 0)
+        addr = 0x00 + x;
+    else
+        addr = 0x40 + x;
+    LcdWriteCmd(addr | 0x80);
 }
+
 void InitLcd1602()
 {
-	LcdWriteCmd(0x38);
-	LcdWriteCmd(0x0C);
-	LcdWriteCmd(0x06);
-	LcdWriteCmd(0x01);
+    LcdWriteCmd(0x38);
+    LcdWriteCmd(0x0C);
+    LcdWriteCmd(0x06);
+    LcdWriteCmd(0x01);
 }
 ```

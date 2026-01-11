@@ -1,11 +1,13 @@
-# 一个Mach3的华丽界面 - PA Mach 3 Screen Set
+# 一个 Mach3 的华丽界面 - PA Mach 3 Screen Set
 
-## PA Mach 3 Screen Set
+## 简介
 
-![PA Mach3界面1](/static/2023/2023-04-27-mach3-pa-screen-set_001.jpg)
+![](/static/2023/2023-04-27-mach3-pa-screen-set_001.jpg)
 
-![PA Mach3界面2](/static/2023/2023-04-27-mach3-pa-screen-set_002.jpg)
+![](/static/2023/2023-04-27-mach3-pa-screen-set_002.jpg)
+
+## 下载
 
 本地下载：[PA Mach 3 Screen Set](https://xcopter.cc/wp-content/uploads/2023/04/20230427-145.zip)
 
-转载自：<http://www.physanon.com/pa-mach-3-screen-set/>
+转载自：http://www.physanon.com/pa-mach-3-screen-set/

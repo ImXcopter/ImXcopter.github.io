@@ -1,44 +1,51 @@
-# ESP32-S3-DevKitC-1开发板在不同版本的IDE做蓝牙开发遇到的问题
+# ESP32-S3-DevKitC-1 开发板在不同版本的 IDE 做蓝牙开发遇到的问题
 
-截至到发文前，Arduino IDE已经更新到2.0.4，1.8.19为老版本IDE的最后一个版本。前些天使用这块ESP32-S3-DevKitC-1开发板在Arduino框架下使用ESP32 BLE Mouse库做蓝牙鼠标的开发遇到了一些问题。
+截至到发文前，Arduino IDE 已经更新到 2.0.4，1.8.19 为老版本 IDE 的最后一个版本。
 
-## 测试环境
+前些天使用这块 ESP32-S3-DevKitC-1 开发板在 Arduino 框架下使用 ESP32 BLE Mouse 库做蓝牙鼠标的开发遇到了一些问题。
 
-- ESP32-S3-DevKitC-1开发板
-- ESP32 2.0.6资源包和ESP32 2.0.7资源包
-- Arduino IDE 1.8.19和Arduino IDE 2.0.3
-- ESP32 BLE Mouse v0.3.1库（https://github.com/T-vK/ESP32-BLE-Mouse）
-- VScode
+**测试环境：**
 
-![ESP32-S3开发板](/static/2023/2023-03-01-esp32s3-bluetooth-ide-issue_001.jpg)
+1. ESP32-S3-DevKitC-1 开发板
+2. ESP32 2.0.6 资源包和 ESP32 2.0.7 资源包
+3. Arduino IDE 1.8.19 和 Arduino IDE 2.0.3
+4. ESP32 BLE Mouse v0.3.1 库（https://github.com/T-vK/ESP32-BLE-Mouse）
+5. VScode
 
-## Arduino程序
+![测试环境](/static/2023/2023-03-01-esp32s3-bluetooth-ide-issue_001.jpg)
 
-本程序皆在测试是否可在PC电脑的蓝牙设备管理里正常识别到名为"Xcopter"的蓝牙鼠标设备。
+**Arduino 程序如下：**
 
-```text
-#include <BleMouse.h>
-#include <BleKeyboard.h>
-#include <BleGamepad.h>
-#include <BleConnectionStatus.h>
+```cpp
+#include <BLEDevice.h>
+#include <BLEServer.h>
+#include <BLEUtils.h>
+#include <BLEMouse.h>
 
 BleMouse bleMouse("Xcopter", "Xcopter", 100);
 
-void setup(){
+void setup() {
     Serial.begin(115200);
     bleMouse.begin();
 }
 
-void loop(){
+void loop() {
 
 }
 ```
 
-## 问题分析
+本程序皆在测试是否可在 PC 电脑的蓝牙设备管理里正常识别到名为 "Xcopter" 的蓝牙鼠标设备。
 
-不同的IDE不同版本的ESP32资源包下，呈现的问题不同，具体为：
+不同的 IDE 不同版本的 ESP32 资源包下，呈现的问题不同，具体为：
 
-- 在ESP32 2.0.6版本的资源包下：Arduino IDE 1.8.19可以正常编译并上传，同时可以识别到蓝牙鼠标设备；在Arduino IDE 2.0.3可以正常编译并上传，但无法识别到蓝牙鼠标设备。
-- 在ESP32 2.0.7版本的资源包下：Arduino IDE 1.8.19可以正常编译但无法上传，提示上传错误；在Arduino IDE 2.0.3可以正常编译并上传，但无法识别到蓝牙鼠标设备。
+1. **在 ESP32 2.0.6 版本的资源包下**：
+   - Arduino IDE 1.8.19 可以正常编译并上传，同时可以识别到蓝牙鼠标设备
+   - Arduino IDE 2.0.3 可以正常编译并上传，但无法识别到蓝牙鼠标设备
 
-另外：VScode在Arduino IDE 2.0.3版本下使用似乎有一些问题，总是提示找不到头文件，在1.8.19版本可正常编译。截至目前，我只能在VScode下使用Arduino IDE 1.8.19版本作为编译器。查了一些资料，可能是在Arduino IDE 2.x版本后，需要在VScode配置Arduino CLI才能正常使用。
+2. **在 ESP32 2.0.7 版本的资源包下**：
+   - Arduino IDE 1.8.19 可以正常编译但无法上传，提示上传错误
+   - Arduino IDE 2.0.3 可以正常编译并上传，但无法识别到蓝牙鼠标设备
+
+另外：VScode 在 Arduino IDE 2.0.3 版本下使用似乎有一些问题，总是提示找不到头文件，在 1.8.19 版本可正常编译。截至目前，我只能在 VScode 下使用 Arduino IDE 1.8.19 版本作为编译器。
+
+查了一些资料，可能是在 Arduino IDE 2.x 版本后，需要在 VScode 配置 Arduino CLI 才能正常使用。

@@ -1,4 +1,4 @@
-# 使用官方脚本一键安装docker|安装docker-compose
+# 使用官方脚本一键安装 Docker | 安装 Docker Compose
 
 ## 使用官方安装脚本自动安装
 
@@ -15,8 +15,6 @@ sudo sh get-docker.sh
 curl -fsSL https://get.docker.com | bash -s docker
 ```
 
-## 设置国内镜像源
-
 可在此命令后附带 `--mirror` 参数设置镜像源，以提高国内服务器下载 docker 的速度。
 
 如使用阿里云镜像：
@@ -25,21 +23,14 @@ curl -fsSL https://get.docker.com | bash -s docker
 curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
 ```
 
-## 启动和设置 Docker
-
-设置开机自启：
-
-```bash
-systemctl enable docker
-```
-
-启动 Docker：
+## 设置开机自启
 
 ```bash
 systemctl start docker
+systemctl enable docker
 ```
 
-重启服务：
+## 重启服务
 
 ```bash
 systemctl daemon-reload

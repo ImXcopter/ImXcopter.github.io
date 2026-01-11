@@ -1,7 +1,10 @@
 # Arduino模拟发送编码器
 
 Arduino模拟编码器代码
+
 本代码在Arduino Mini PRO下编译通过！
+
+## 代码
 
 ```cpp
 // 定义引脚

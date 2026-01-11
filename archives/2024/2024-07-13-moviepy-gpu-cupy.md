@@ -1,10 +1,10 @@
 # moviepy用GPU加速的方法 - cupy
 
-### 首先安装CUPY，安装方法自行百度！
+首先安装CUPY，安装方法自行百度！
 
 ## moviepy默认的安装路径
 
-```text
+```
 C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\site-packages\moviepy
 ```
 
@@ -71,7 +71,7 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
     return new_im2.astype('uint8') if (not ismask) else new_im2
 ```
 
-## 替换color_gradient函数
+替换color_gradient函数：
 
 ```python
 def color_gradient(size, p1, p2=None, vector=None, r=None, col1=0, col2=1.0,
@@ -333,7 +333,7 @@ if (dtype is not None) and (frame.dtype != dtype):
 import cupy as cp
 ```
 
-## 修改 fill_array 方法
+修改 fill_array 方法:
 
 ```python
 def fill_array(self, pre_array, shape=(0, 0)):
@@ -354,7 +354,7 @@ def fill_array(self, pre_array, shape=(0, 0)):
     return post_array
 ```
 
-## 修改 blit_on 方法
+修改 blit_on 方法:
 
 ```python
 def blit_on(self, picture, t):
@@ -412,7 +412,7 @@ def blit_on(self, picture, t):
     return blit(img, picture, pos, mask=mask, ismask=self.ismask)
 ```
 
-## 修改 to_RGB 方法
+修改 to_RGB 方法:
 
 ```python
 def to_RGB(self):
@@ -426,7 +426,7 @@ def to_RGB(self):
         return self
 ```
 
-## 修改 ImageClip 的 __init__ 方法
+修改 ImageClip 的 __init__ 方法:
 
 ```python
 class ImageClip(VideoClip):
@@ -491,7 +491,7 @@ class ImageClip(VideoClip):
         self.img = img
 ```
 
-## 修改 ColorClip 的 __init__ 方法
+修改 ColorClip 的 __init__ 方法:
 
 ```python
 class ColorClip(ImageClip):
@@ -531,7 +531,7 @@ class ColorClip(ImageClip):
                            ismask=ismask, duration=duration)
 ```
 
-## 修改 TextClip 的 __init__ 方法
+修改 TextClip 的 __init__ 方法:
 
 ```python
 class TextClip(ImageClip):
@@ -562,7 +562,7 @@ class TextClip(ImageClip):
 
     color
       Color of the text. See ``TextClip.list('color')`` for a
-      list of acceptable names.
+      list of acceptable colors.
 
     font
       Name of the font to use. See ``TextClip.list('font')`` for
@@ -690,7 +690,7 @@ class TextClip(ImageClip):
         if os.name == "nt":
             popen_params["creationflags"] = 0x08000000
 
-        process = sp.Popen([get_setting("IMAGEMAGICK_BINARY"),
+        process = sp.Popen([get_setting("IMAGEMAGAGICK_BINARY"),
                             '-list', arg], **popen_params)
         result = process.communicate()[0]
         lines = result.splitlines()
@@ -717,7 +717,7 @@ class TextClip(ImageClip):
         return [name for name in names_list if string in name.lower()]
 ```
 
-## 5、修改 moviepy\video\fx\fadein.py
+## 5、修改 moviepy/video/fx/fadein.py
 
 ```python
 import cupy as cp
@@ -746,7 +746,7 @@ def fadein(clip, duration, initial_color=None):
     return clip.fl(fl)
 ```
 
-## 6、修改 moviepy\video\fx\fadeout.py
+## 6、修改 moviepy/video/fx/fadeout.py
 
 ```python
 import cupy as cp
@@ -779,7 +779,7 @@ def fadeout(clip, duration, final_color=None):
     return clip.fl(fl)
 ```
 
-## 7、修改 moviepy\video\io\ffmpeg_writer.py
+## 7、修改 moviepy/video/io/ffmpeg_writer.py
 
 ```python
 """
@@ -1063,7 +1063,7 @@ def ffmpeg_write_image(filename, image, logfile=False):
     del proc
 ```
 
-## 8、修改 moviepy\video\io\ffmpeg_reader.py
+## 8、修改 moviepy/video/io/ffmpeg_reader.py
 
 ```python
 """
@@ -1440,7 +1440,7 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
     return result
 ```
 
-## 9、修改 moviepy\video\io\VideoFileClip.py
+## 9、修改 moviepy/video/io/VideoFileClip.py
 
 ```python
 import os
@@ -1455,7 +1455,6 @@ from moviepy.video.VideoClip import VideoClip
 class VideoFileClip(VideoClip):
 
     """
-
 
     A video clip originating from a movie file. For instance: ::
 
@@ -1520,7 +1519,6 @@ class VideoFileClip(VideoClip):
 
     If copies are made, and close() is called on one, it may cause methods on the other copies to fail.
 
-
     """
 
     def __init__(self, filename, has_mask=False,
@@ -1550,7 +1548,7 @@ class VideoFileClip(VideoClip):
 
         if has_mask:
 
-            self.make_frame = lambda t: cp.asarray(self.reader.get_frame(t)[:,:,:3]
+            self.make_frame = lambda t: cp.asarray(self.reader.get_frame(t)[:,:,:3])
             mask_mf = lambda t: cp.asarray(self.reader.get_frame(t)[:,:,3]) / 255.0
             self.mask = (VideoClip(ismask=True, make_frame=mask_mf)
                          .set_duration(self.duration))

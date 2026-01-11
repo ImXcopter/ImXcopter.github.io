@@ -4,7 +4,7 @@
 
 ## moviepy默认的安装路径
 
-```text
+```
 C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\site-packages\moviepy
 ```
 
@@ -66,21 +66,21 @@ def blit_gpu(im1, im2, pos=None, mask=None, ismask=False):
 
 ## 2、修改源文件moviepy/video/VideoClip.py
 
-在文件中头部修改
+在文件中头部修改：
 
 ```python
 from .tools.drawing import blit_gpu
 ```
 
-修改第565行返回为下面的代码
+修改第565行返回为下面的代码：
 
 ```python
 return blit_gpu(img, picture, pos, mask=mask, ismask=self.ismask)
 ```
 
-## 3、修改源文件moviepy\Clip.py
+## 3、修改源文件moviepy/Clip.py
 
-把iter_frames方法的以下部分
+把iter_frames方法的以下部分：
 
 ```python
 if (dtype is not None) and (frame.dtype != dtype):

@@ -1,20 +1,16 @@
-# 安装Midjourney Proxy小记
+# 安装 Midjourney Proxy 小记
 
-## 项目地址
-
-<https://github.com/trueai-org/midjourney-proxy/blob/main/README.md>
+项目地址：<https://github.com/trueai-org/midjourney-proxy/blob/main/README.md>
 
 在一台全新的 Debian 12 的 VPS 下安装成功，以下是安装过程。
 
-## Midjourney Proxy Linux 一键安装脚本
-
-### 方式1
+## 安装方式一
 
 ```bash
 wget -N --no-check-certificate https://raw.githubusercontent.com/trueai-org/midjourney-proxy/main/scripts/linux_install.sh && chmod +x linux_install.sh && bash linux_install.sh
 ```
 
-### 方式2
+## 安装方式二
 
 ```bash
 curl -o linux_install.sh https://raw.githubusercontent.com/trueai-org/midjourney-proxy/main/scripts/linux_install.sh && chmod +x linux_install.sh && bash linux_install.sh
@@ -25,7 +21,7 @@ curl -o linux_install.sh https://raw.githubusercontent.com/trueai-org/midjourney
 - 选择 1. 安装 Docker
 - 选择 2. 拉取镜像并启动容器
 
-## 配置 Nginx 反向代理和 SSL
+## 配置 Nginx 反向代理
 
 安装完成后，可以安装 Nginx 和 Certbot 对项目配置 Nginx 来反向代理 8086 端口并自动获取和续签域名 SSL 证书。
 
@@ -77,11 +73,11 @@ sudo systemctl reload nginx
 sudo certbot --nginx -d midjourney-proxy.your-domain-name.com
 ```
 
-**过程说明**：
+过程说明：
 
 Certbot 会自动修改 Nginx 配置，加上 SSL 和自动重定向 HTTP → HTTPS。
 
-你需要确保 DNS 解析正确（即 `midjourney-proxy.your-domain-name.com` 已指向你的服务器 IP）。
+你需要确保 DNS 解析正确（即 midjourney-proxy.your-domain-name.com 已指向你的服务器 IP）。
 
 ### 第四步：确认自动续签设置
 
@@ -97,11 +93,9 @@ sudo systemctl list-timers | grep certbot
 sudo certbot renew --dry-run
 ```
 
-配置完成后浏览器访问：
+## 访问地址
 
-```text
-https://midjourney-proxy.your-domain-name.com
-```
+配置完成后浏览器访问：`https://midjourney-proxy.your-domain-name.com`
 
 此时，应该可以安全地通过 SSL 访问，并且请求被代理到本地的 8086 端口。
 
