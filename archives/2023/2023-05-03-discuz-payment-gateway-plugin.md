@@ -1,0 +1,23 @@
+# Discuz论坛多合一聚合支付接口插件
+
+Discuz论坛多合一聚合支付接口插件，该插件直接替换了自带的支付接口功能，增强了支付的扩展性，自带支持支付宝、微信、QQ钱包官方支付，以及彩虹易支付、我爱支付、虎皮椒等支付通道，并且可以自由扩展其他的支付通道。
+本插件和Discuz应用中心那些积分充值等插件是有本质区别的，那些插件需要新增一个积分充值页面，而本插件是直接替换了DiscuzX 3.5自带的支付接口，所以Discuz自带的积分充值功能就可以直接调用本插件，邀请码购买也同样可以直接调用。
+与DiscuzX 3.5自带的支付功能相比，有如下功能特点：
+1.支持支付宝当面付与微信JSAPI扫码，原版不支持；
+2.支持通过支付插件来扩展其他支付通道，原版不支持；
+3.支持微信小程序支付接口，原版不支持；
+4.针对手机端扫码支付进行了特别优化，可直接跳转APP支付；
+5.支持订单原路退款功能，原版不支持。
+后台演示截图：
+![](/static/2023/2023-05-03-discuz-payment-gateway-plugin_001.png)
+![](/static/2023/2023-05-03-discuz-payment-gateway-plugin_002.png)
+电脑端支付演示截图：
+![](/static/2023/2023-05-03-discuz-payment-gateway-plugin_003.png)
+手机端支付演示截图：
+![](/static/2023/2023-05-03-discuz-payment-gateway-plugin_004.png)
+下载地址：
+https://wwi.lanzoub.com/ikvVA0ujeknc
+本地下载：
+[unifiedpay](https://xcopter.cc/wp-content/uploads/2023/05/20230503-153.zip)
+使用方法：
+本插件只支持DiscuzX 3.5版本，上传到/source/plugin/目录后解压，在后台插件列表开启。

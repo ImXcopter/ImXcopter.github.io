@@ -1,0 +1,90 @@
+# 51单片机 - 独立按键消抖Coding练习
+
+本程序代码为《手把手教你学51单片机》8.6课后练习题4，并且已经在KST-51 v1.3.2开发板验证通过。
+
+```
+#include 
+
+sbit ADDR0 = P1^0;
+sbit ADDR1 = P1^1;
+sbit ADDR2 = P1^2;
+sbit ADDR3 = P1^3;
+sbit ENLED = P1^4;
+sbit keyIn1 = P2^4;
+sbit keyIn2 = P2^5;
+sbit keyIn3 = P2^6;
+sbit keyIn4 = P2^7;
+sbit keyOut1 = P2^3;
+sbit keyOut2 = P2^2;
+sbit keyOut3 = P2^1;
+sbit keyOut4 = P2^0;
+
+//数码管真值表
+unsigned char code LedChar[16] = {
+    0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8,
+    0x80, 0x90, 0x88, 0x83, 0xC6, 0xA1, 0x86, 0x8E
+};
+//当前按键的状态
+bit keySta = 1;
+
+void main()
+{
+    bit keyBackup = 0;              //备份按键状态，保存前一次的按键状态
+    unsigned char cnt = 15;         //按键计数，记录按键按下的次数
+
+    EA = 1;                         //开启总中断
+    ENLED = 0;                      //使能数码管的U3
+    ADDR3 = 1;
+    ADDR2 = 0;                      //选择数码管DS1进行显示
+    ADDR1 = 0;
+    ADDR0 = 0;
+    TMOD &= 0xF0;                   //设置Timer0为模式1
+    TMOD |= 0x01;
+    TH0 = 0xF8;                     //为Timer0赋初值0xF8CD，定时2ms
+    TL0 = 0xCD;
+    ET0 = 1;                        //使能Timer0中断
+    TR0 = 1;                        //启动Timer0
+    P2 = 0xF7;                      //P2^3置0，即keyOut1输出低电平
+    P0 = LedChar[cnt];              //显示按键次数的初始值15
+
+    while (1)
+    {
+        if (keySta != keyBackup)    //如果Key当前值不得高于Key的备份值，说明按键有变化了
+        {
+            if(keySta == 0)         //如果Key当前值为0，说明当前按键已经按下状态
+            {
+                if (cnt == 0)
+                {
+                    cnt = 15;
+                }
+                else
+                {
+                    cnt--;
+                }
+                P0 = LedChar[cnt];  //计数值显示到数码管上
+            }
+            keyBackup = keySta;     //更新备份为当前值，以备下次比较使用
+        }
+    }
+}
+
+void InterruptTimer0() interrupt 1
+{
+    static unsigned char keyBuff = 0xFF;   //扫描缓冲区，保存一段时间内的扫描值，所以用static来修饰变量
+    TH0 = 0xF8;                            //重载定时器初值
+    TL0 = 0xCD;
+
+    //每次进入中断左移1位，并且和keyIn1或运算。
+    //或运算的作用是：左移1位后面补位为0，keyIn1是0的话或运算后还是0，keyIn1是1的话或运算后则为1
+    keyBuff = (keyBuff << 1) | keyIn1;          
+
+    if (keyBuff == 0x00)                  //如果连续8次都是0，则将keySta赋为0，说明按键为稳定的按下去的状态
+    {
+        keySta = 0;
+    }
+    if (keyBuff == 0xFF)                  //如果连续8次都是1，则将keySta赋为1，说明按键为稳定的弹起状态
+    {
+        keySta = 1;
+    }
+}
+```

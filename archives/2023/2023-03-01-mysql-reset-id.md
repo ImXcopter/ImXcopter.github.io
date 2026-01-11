@@ -1,0 +1,23 @@
+# MySQL ID重新排列方法
+
+我们使用MySQL经常会遇到，在删除数据库某条记录时，原来的ID排序会有间隔，比如删除了ID为8的数据,这个表的ID排序就会从7直接到9,那我们如何解决这个ID重新排列的问题呢?
+
+只需一下三步:
+
+1.删除这个表的ID
+
+```
+ALTER TABLE `table_name` DROP `id`;
+```
+
+2.重新建立ID字段
+
+```
+ALTER TABLE `table_name` ADD `id` MEDIUMINT( 8 ) NOT NULL FIRST;
+```
+
+3.为这个字段设置新的主键,并且自动增长
+
+```
+ALTER TABLE `table_name` MODIFY COLUMN `id` MEDIUMINT( 8 ) NOT NULL AUTO_INCREMENT,ADD PRIMARY KEY(id);
+```
