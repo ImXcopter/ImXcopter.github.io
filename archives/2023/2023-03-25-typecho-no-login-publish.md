@@ -36,4 +36,4 @@ $db_config = array (
 
 ## 下载地址
 
-[Typecho 免登陆接口.zip](https://xcopter.cc/down/Typecho免登陆接口.zip)
+[Typecho 免登陆接口.zip](https://attachment.xcopter.cc/2023/Typecho%E5%85%8D%E7%99%BB%E9%99%86%E6%8E%A5%E5%8F%A3.zip)
