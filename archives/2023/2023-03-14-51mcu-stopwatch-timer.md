@@ -1,9 +1,9 @@
 # 51单片机 - 秒表计时代码
 
-**手撸一边代码，加深记忆。就不写注释了。使用的是51单片机的定时器0，进中断来刷新数码管。**
+**手撸一遍代码，加深记忆。就不写注释了。使用的是51单片机的定时器0，进中断来刷新数码管。**
 
-```
-#include 
+```text
+#include <reg52.h>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;
@@ -24,7 +24,7 @@ unsigned char i = 0;
 
 void main(){
     unsigned long sec = 0;
-    
+
     EA = 1;
     ENLED = 0;
     ADDR3 = 1;

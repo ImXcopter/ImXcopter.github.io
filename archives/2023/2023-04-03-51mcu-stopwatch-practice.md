@@ -1,11 +1,13 @@
 # 51单片机 - 秒表程序Coding练习
 
-本程序是矩阵按键扫描，数码管动态扫描，定时器中断的综合练习，其中秒表显示计数函数用了2种写法，是2种不同的思路。
-代码已经在KST-51 v1.3.2开发板验证通过。
-![](/static/2023/2023-04-03-51mcu-stopwatch-practice_001.png)
+本程序是矩阵按键扫描，数码管动态扫描，定时器中断的综合练习，其中秒表显示计数函数用了 2 种写法，是 2 种不同的思路。
 
-```
-#include 
+代码已经在 KST-51 v1.3.2 开发板验证通过。
+
+![秒表程序](/static/2023/2023-04-03-51mcu-stopwatch-practice_001.png)
+
+```text
+#include <reg52.h>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;
@@ -55,9 +57,9 @@ void KeyDriver();
 
 void main()
 {
-	EA = 1;                             //使能总中断
-	ENLED = 0;                          //选择数码管进行显示
-	ADDR3 = 1;
+    EA = 1;                             //使能总中断
+    ENLED = 0;                          //选择数码管进行显示
+    ADDR3 = 1;
     ConfigTimer0(2);                    //配置Timer0，定时2ms
 
     while (1)
@@ -220,11 +222,11 @@ void LedScan()
 }
 //按键扫描函数
 void KeyScan()
-{   
+{
     unsigned char i;
     static unsigned keyout = 0;
     //按键扫描缓冲区
-    static unsigned char keyBuff[4][4] = {                      
+    static unsigned char keyBuff[4][4] = {
         {0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0xFF},
         {0xFF, 0xFF, 0xFF, 0xFF}, {0xFF, 0xFF, 0xFF, 0xFF}
     };

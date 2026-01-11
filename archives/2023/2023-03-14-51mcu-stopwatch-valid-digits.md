@@ -1,9 +1,9 @@
 # 51单片机 – 秒表计时代码（只显示有效位）
 
-本程序代码为《手把手教你学51单片机》6.6的课后练习题4，并且已经在KST-51 v1.3.2开发板验证通过。
+本程序代码为《手把手教你学51单片机》6.6 的课后练习题 4，并且已经在 KST-51 v1.3.2 开发板验证通过。
 
-```
-#include 
+```text
+#include <reg52.h>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;
@@ -16,6 +16,7 @@ unsigned char code LedChar[16] = {
     0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8,
     0x80, 0x90, 0x88, 0x83, 0xC6, 0xA1, 0x86, 0x8E
 };
+
 //数码管显示缓冲区，初值0xFF确保启动时都不亮
 unsigned char LedBuff[6] = {
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
@@ -66,6 +67,7 @@ void main(){
         }
     }
 }
+
 /* 定时器0中断服务函数 */
 void interruptTimer0() interrupt 1{
     TH0 = 0xFC;         //重新加载初值

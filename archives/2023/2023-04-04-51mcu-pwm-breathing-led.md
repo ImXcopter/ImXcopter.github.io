@@ -1,12 +1,13 @@
 # 51单片机 - PWM控制P0口Led呼吸灯
 
-通过IO口模拟产生PWM，并通过占空比的控制Led灯的亮度。定时器0用来产生PWM，定时器1用来调整占空比的数值。
-代码已经在KST-51 v1.3.2开发板验证通过。
-效果展示：
-[bradmax\_video url="https://xcopter.cc/wp-content/uploads/2023/04/20230404-280.mp4" duration="11"]
+通过 IO 口模拟产生 PWM，并通过占空比的控制 Led 灯的亮度。定时器 0 用来产生 PWM，定时器 1 用来调整占空比的数值。
 
-```
-#include 
+代码已经在 KST-51 v1.3.2 开发板验证通过。
+
+**效果展示：[视频演示](https://xcopter.cc/wp-content/uploads/2023/04/20230404-280.mp4)**
+
+```text
+#include <reg52.h>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;
@@ -116,7 +117,7 @@ void InterruptTimer1() interrupt 3
     unsigned char code table[19] = {
         5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95
     };
-    
+
     TH1 = T1RH;
     TL1 = T1RL;
 

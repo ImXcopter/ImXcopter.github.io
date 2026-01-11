@@ -2,8 +2,8 @@
 
 本程序代码为《手把手教你学51单片机》5.4的课后练习题3，并且已经在KST-51 v1.3.2开发板验证通过。
 
-```
-#include 
+```text
+#include <reg52.h>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;
@@ -30,10 +30,10 @@ void main(){
     TL0 = 0x67;
     ET0 = 1;        //使能Timer0中断
     TR0 = 1;        //启动Timer0
-    
+
     while(1){
         P0 = ~shift;                    //P0等于循环移位变量取反，控制8个LED
-        
+
         if(flagTF == 1){
             flagTF = 0;
             if(dir == 0){               //移位方向变量为0时，左移
@@ -49,7 +49,7 @@ void main(){
                 }
             }
         }
-    }      
+    }
 }
 
 void interruptTimer0() interrupt 1{

@@ -1,33 +1,40 @@
 # 51单片机 – LED灯显示二进制代码进阶版
 
-之前写过一个[51单片机 – LED灯显示二进制代码](https://xcopter.cc/51mcu-led-display-binary/)，为了锻炼一下综合能力，这里又加了一些花里胡哨的效果进去。
-这里提一下coding过程遇到的坑：在只有0和1两个状态的时候，或者说想使用取反运算符得到0或者1的时候，尽量选择bit形变量。如果使用了非bit形的变量，例如使用了unsigned char形的变量，需要手动置1或者手动置0，就无法使用~取反运算得到0或者1的结果了。
-代码已经在KST-51 v1.3.2开发板验证通过。
-![](/static/2023/2023-03-15-51mcu-led-binary-advanced_001.png)
-效果视频：
-[bradmax\_video url="https://xcopter.cc/wp-content/uploads/2023/03/20230315-275.mp4" duration="21"]
+之前写过一个**51单片机 – LED灯显示二进制代码**，为了锻炼一下综合能力，这里又加了一些花里胡哨的效果进去。
 
-```
-#include 
+这里提一下 coding 过程遇到的坑：在只有 0 和 1 两个状态的时候，或者说想使用取反运算符得到 0 或者 1 的时候，尽量选择 bit 形变量。如果使用了非 bit 形的变量，例如使用了 unsigned char 形的变量，需要手动置 1 或者手动置 0，就无法使用 ~ 取反运算得到 0 或者 1 的结果了。
+
+代码已经在 KST-51 v1.3.2 开发板验证通过。
+
+![LED二进制进阶版](/static/2023/2023-03-15-51mcu-led-binary-advanced_001.png)
+
+**效果视频：[视频演示](https://xcopter.cc/wp-content/uploads/2023/03/20230315-275.mp4)**
+
+```text
+#include <reg52.h>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;
 sbit ADDR2 = P1^2;
 sbit ADDR3 = P1^3;
 sbit ENLED = P1^4;
+
 //数码管真值表
 unsigned char code LedChar[16] = {
     0xC0, 0xF9, 0xA4, 0xB0, 0x99, 0x92, 0x82, 0xF8,
     0x80, 0x90, 0x88, 0x83, 0xC6, 0xA1, 0x86, 0x8E
 };
+
 //数码管顺时针旋转真值表
 unsigned char code LedCW[6] = {
     0xF7, 0xEF, 0xDF, 0xFE, 0xFD, 0xFB
 };
+
 //数码管逆时针旋转真值表
 unsigned char code LedCCW[6] = {
     0xFB, 0xFD, 0xFE, 0xDF, 0xEF, 0xF7
 };
+
 //前六个为数码管显示缓冲区，最后1个为8个LED小灯的初始值，初值0xFF确保启动时都不亮
 unsigned char LedBuff[7] = {
     0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
@@ -42,7 +49,7 @@ void main(){
     unsigned buff[3];                   //中间转换缓冲区
     signed char k = 0;
     bit flagLedDP = 0;                  //数码管小点标志位
-    
+
     EA = 1;                             //使能总中断
     ENLED = 0;                          //使能U3
     ADDR3 = 1;                          //因为需要动态改变ADDR0-2的值，所以ADDR0-2不需要再初始化了
@@ -52,7 +59,7 @@ void main(){
     TL1 = 0x67;
     ET1 = 1;                            //使能Timer1中断
     TR1 = 1;                            //启动Timer1
-        
+
     while(1){
         if(flag1s){                     //判断1秒定时标志
             flag1s = 0;                 //1秒定时标志清零
@@ -109,9 +116,10 @@ void main(){
         }
     }
 }
+
 /* 定时器1中断服务函数 */
 void interruptTimer1() interrupt 3{
-    static unsigned char i = 0; 
+    static unsigned char i = 0;
     static unsigned int cnt = 0;
     static unsigned int ledcnt = 0;
 

@@ -2,7 +2,7 @@
 
 将下面的代码保存成.py文件，运行即可得到结果。
 
-```
+```python
 import torch
 print('CUDA版本:',torch.version.cuda)
 print('Pytorch版本:',torch.__version__)

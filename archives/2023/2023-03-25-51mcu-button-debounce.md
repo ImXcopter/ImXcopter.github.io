@@ -1,9 +1,9 @@
 # 51单片机 - 独立按键消抖Coding练习
 
-本程序代码为《手把手教你学51单片机》8.6课后练习题4，并且已经在KST-51 v1.3.2开发板验证通过。
+本程序代码为《手把手教你学51单片机》8.6 课后练习题 4，并且已经在 KST-51 v1.3.2 开发板验证通过。
 
-```
-#include 
+```text
+#include <reg52.h>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;
@@ -76,7 +76,7 @@ void InterruptTimer0() interrupt 1
 
     //每次进入中断左移1位，并且和keyIn1或运算。
     //或运算的作用是：左移1位后面补位为0，keyIn1是0的话或运算后还是0，keyIn1是1的话或运算后则为1
-    keyBuff = (keyBuff << 1) | keyIn1;          
+    keyBuff = (keyBuff << 1) | keyIn1;
 
     if (keyBuff == 0x00)                  //如果连续8次都是0，则将keySta赋为0，说明按键为稳定的按下去的状态
     {

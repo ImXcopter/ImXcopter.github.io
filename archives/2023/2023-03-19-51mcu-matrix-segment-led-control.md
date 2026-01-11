@@ -1,11 +1,11 @@
 # 51单片机 – 同时点亮KST-51开发板的8x8点阵，LED数码管和LED小灯
 
-效果展示：
-[bradmax\_video url="https://xcopter.cc/wp-content/uploads/2023/03/20230319-68.mp4" duration="22"]
-本程序代码为《手把手教你学51单片机》7.6的课后练习题6，并且已经在KST-51 v1.3.2开发板验证通过。
+效果展示：**[视频演示](https://xcopter.cc/wp-content/uploads/2023/03/20230319-68.mp4)**
 
-```
-#include 
+本程序代码为《手把手教你学51单片机》7.6 的课后练习题 6，并且已经在 KST-51 v1.3.2 开发板验证通过。
+
+```text
+#include <reg52.h>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;

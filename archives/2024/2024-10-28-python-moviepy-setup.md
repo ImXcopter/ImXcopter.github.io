@@ -1,75 +1,70 @@
 # Python下moviepy加速的环境配置
 
-1.安装CUDA12.4版本（具体要看Pytorch支持到哪个版本）
-----------------------------------
+## 1. 安装CUDA12.4版本
 
-2.安装Python，版本为Python 3.12.7
----------------------------
+具体版本要看Pytorch支持到哪个版本。
 
-3.升级pip：
---------
+## 2. 安装Python
 
-```
+版本为Python 3.12.7
+
+## 3. 升级pip
+
+```bash
 pip install --upgrade pip
 ```
 
-4.安装moviepy：
-------------
+## 4. 安装moviepy
 
-```
+```bash
 pip install moviepy
 ```
 
-5.安装ImageMagick，并且将convert.exe拷贝至安装目录:[convert.zip](https://xcopter.cc/wp-content/uploads/2024/10/20241028-31.zip)
-------------------------------------------------------------------------------------------------------------------
+## 5. 安装ImageMagick
 
-6.安装pytorch
------------
+将convert.exe拷贝至安装目录: [convert.zip](https://xcopter.cc/wp-content/uploads/2024/10/20241028-31.zip)
 
-7.安装cupy
---------
+## 6. 安装pytorch
 
-8.安装openai whisper：
--------------------
+## 7. 安装cupy
 
-```
+## 8. 安装openai whisper
+
+```bash
 pip install openai-whisper
 ```
 
-9.安装whisperx：
--------------
+## 9. 安装whisperx
 
-```
+```bash
 pip install whisperx
 ```
 
-10.安装chardet：
--------------
+## 10. 安装chardet
 
-```
+```bash
 pip install chardet
 ```
 
-11.安装pydub：
------------
+## 11. 安装pydub
 
-```
+```bash
 pip install pydub
 ```
 
-12.升级pyannote.audio：
---------------------
+## 12. 升级pyannote.audio
 
-```
+```bash
 pip install --upgrade pyannote.audio
 ```
 
-13.替换Moviepy的Cupy加速版:[moviepy](https://xcopter.cc/wp-content/uploads/2024/10/20241028-46.zip)
----------------------------------------------------------------------------------------------
+## 13. 替换Moviepy的Cupy加速版
+
+[moviepy](https://xcopter.cc/wp-content/uploads/2024/10/20241028-46.zip)
 
 以下是正常运行的各类依赖的版本：
 
-```
+```text
 C:\Users\Administrator>pip list
 Package Version
 ----------------------- ------------

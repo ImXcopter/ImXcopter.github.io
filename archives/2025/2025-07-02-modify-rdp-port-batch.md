@@ -1,9 +1,8 @@
 # 远程桌面修改3389端口代码
 
-将下面的代码，保存成bat文件，直接运行即可！
------------------------
+将下面的代码，保存成 bat 文件，直接运行即可！
 
-```
+```batch
 @echo off
 >nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
 if '%errorlevel%' NEQ '0' (
@@ -44,7 +43,7 @@ Reg add "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-T
 Reg add "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /v "{338933891-3389-3389-3389-338933893389}" /t REG_SZ /d "v2.29|Action=Allow|Active=TRUE|Dir=In|Protocol=6|LPort=%Port%|Name=Remote Desktop(TCP-In)|" /f > nul
 Reg add "HKLM\SYSTEM\CurrentControlSet\Services\SharedAccess\Parameters\FirewallPolicy\FirewallRules" /v "{338933892-3389-3389-3389-338933893389}" /t REG_SZ /d "v2.29|Action=Allow|Active=TRUE|Dir=In|Protocol=17|LPort=%Port%|Name=Remote Desktop(UDP-In)|" /f > nul
 echo 修改成功
-echo 请牢记，你的远程端口是: %Port% 
+echo 请牢记，你的远程端口是: %Port%
 echo 重启计算机生效
 %ing% && goto:Menu) else (echo 错误的端口，%Port% 大于所设置的范围，请在"1-65535"内。
 %ing% && goto:RemotePort)

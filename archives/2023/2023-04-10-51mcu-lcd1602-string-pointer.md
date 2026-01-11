@@ -1,9 +1,9 @@
 # 51单片机 - 1602液晶显示字符串（指针方式）
 
-![](/static/2023/2023-04-10-51mcu-lcd1602-string-pointer_001.png)
+![LCD1602液晶显示字符串](/static/2023/2023-04-10-51mcu-lcd1602-string-pointer_001.png)
 
-```
-#include 
+```text
+#include <reg52.h>
 #define LCD1602_DB P0
 
 sbit LCD1602_RS = P1^0;

@@ -1,12 +1,11 @@
 # 51单片机 - 数码管图片帧刷新coding训练
 
-效果展示：
-[bradmax\_video url="https://xcopter.cc/wp-content/uploads/2023/03/20230316-138.mp4" duration="20"]
-由于摄像头拍摄帧率的缘故，正好可以在视频中看到逐行刷新的效果。
-本代码已经在KST-51 v1.3.2开发板验证通过，代码如下：
+效果展示：**[视频演示](https://xcopter.cc/wp-content/uploads/2023/03/20230316-138.mp4)** (由于摄像头拍摄帧率的缘故，正好可以在视频中看到逐行刷新的效果)
 
-```
-#include 
+本代码已经在 KST-51 v1.3.2 开发板验证通过，代码如下：
+
+```text
+#include <reg52.h>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;
@@ -32,7 +31,7 @@ void main() {
 
     EA = 1;                                     //使能总中断
     ENLED = 0;                                  //使能U4，选择LED点阵
-    ADDR3 = 0;                                  
+    ADDR3 = 0;
     TMOD &= 0xF0;                               //设置Timer0为模式1
     TMOD |= 0x01;
     TH0 = 0xFC;                                 //为Timer0赋初值0xFC67，定义1ms
@@ -73,7 +72,7 @@ void interruptTimer0() interrupt 1 {
     static unsigned int i = 0;
     static unsigned int cnt1ms_1 = 0;
     static unsigned int cnt1ms_2 = 0;
-    
+
     TH0 = 0xFC;                                 //重新加载Timer0初值
     TL0 = 0x67;
     cnt1ms_1++;                                 //中断次数计数值加1
@@ -101,14 +100,14 @@ void interruptTimer0() interrupt 1 {
         case 6: ADDR2 = 1; ADDR1 = 1; ADDR0 = 0; i++; P0 = images[index][6]; break;
         case 7: ADDR2 = 1; ADDR1 = 1; ADDR0 = 1; i = 0; P0 = images[index][7]; break;
     }
-    
+
 }
 ```
 
 另一种方法：也可将图片帧播放过程放进中断：
 
-```
-#include 
+```text
+#include <reg52.h>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;
@@ -128,7 +127,7 @@ unsigned char code images[6][8] = {
 void main() {
     EA = 1;                                     //使能总中断
     ENLED = 0;                                  //使能U4，选择LED点阵
-    ADDR3 = 0;                                  
+    ADDR3 = 0;
     TMOD &= 0xF0;                               //设置Timer0为模式1
     TMOD |= 0x01;
     TH0 = 0xFC;                                 //为Timer0赋初值0xFC67，定义1ms
@@ -150,7 +149,7 @@ void interruptTimer0() interrupt 1 {
     static unsigned char cyclecnt = 0;          //图片帧播放次数变量
     static bit flagcnt50ms = 0;                 //50ms的标志位变量
     static bit flagcnt3s = 0;                   //3s的标志位变量
-    
+
     TH0 = 0xFC;                                 //重新加载Timer0初值
     TL0 = 0x67;
     cnt1ms_1++;                                 //中断次数计数值加1

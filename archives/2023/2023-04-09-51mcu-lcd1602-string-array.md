@@ -2,8 +2,8 @@
 
 代码已经在KST-51 v1.3.2开发板验证通过。
 
-```
-#include 
+```text
+#include <reg52.h>
 
 #define LCD1602_DB  P0
 sbit LCD1602_RS = P1^0;
@@ -26,7 +26,7 @@ void main()
 		LcdWriteDat(str[i]);
         i++;
 	}
-	while(1);		
+	while(1);
 }
 
 void LcdWaitReady()

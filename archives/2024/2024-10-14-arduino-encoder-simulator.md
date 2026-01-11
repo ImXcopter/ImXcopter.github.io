@@ -2,9 +2,8 @@
 
 Arduino模拟编码器代码
 本代码在Arduino Mini PRO下编译通过！
------------------------------------------
 
-```
+```cpp
 // 定义引脚
 #define AP_pin 10
 #define AN_pin 9
@@ -26,7 +25,7 @@ void setup() {
   pinMode(BN_pin, OUTPUT);
   pinMode(IP_pin, OUTPUT);
   pinMode(IN_pin, OUTPUT);
-  
+
   // 设置输入引脚
   pinMode(KeyA_pin, INPUT_PULLUP);
   pinMode(KeyB_pin, INPUT_PULLUP);

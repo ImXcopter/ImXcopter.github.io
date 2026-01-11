@@ -1,4 +1,6 @@
-Xcopter.cc's Blog
+# 归档文档
+
+本仓库包含从 WordPress 导出的所有文章归档。
 
 ---
 
@@ -9,7 +11,7 @@ Xcopter.cc's Blog
 - [immortalwrt x86/64软路由物理安装](archives/2025/2025-06-28-immortalwrt-x86-install.md)
 - [nul文件无法删除的解决方法](archives/2025/2025-12-23-delete-nul-file-windows.md)
 - [中转Edge TTS并兼容OpenAI TTS的接口](archives/2025/2025-02-09-edge-tts-openai-api-proxy.md)
-- [使用官方脚本一键安装docker 安装docker-compose](archives/2025/2025-06-05-docker-install-script.md)
+- [使用官方脚本一键安装docker|安装docker-compose](archives/2025/2025-06-05-docker-install-script.md)
 - [安装Midjourney Proxy小记](archives/2025/2025-06-15-midjourney-proxy-install.md)
 - [电位器转换PWM输出Arduino代码](archives/2025/2025-06-09-arduino-potentiometer-pwm.md)
 - [远程桌面修改3389端口代码](archives/2025/2025-07-02-modify-rdp-port-batch.md)

@@ -2,29 +2,29 @@
 
 ### 首先安装CUPY，安装方法自行百度！
 
-moviepy默认的安装路径为：
-----------------
+## moviepy默认的安装路径
 
-```
+```text
 C:\Users\Administrator\AppData\Local\Programs\Python\Python312\Lib\site-packages\moviepy
 ```
 
-1、修改 moviepy/video/tools/drawing.py
------------------------------------
+## 1、修改 moviepy/video/tools/drawing.py
 
 在这段代码中，我们用 cupy 的操作替换了 numpy 的操作，以便利用 GPU 加速处理。主要的修改点包括：
-1.导入 cupy 并用 cp 作为别名。
-2.使用 cp.copy 替代 numpy 的复制操作。
-3.使用 cp.dstack 替代 numpy 的堆叠操作。
+
+1. 导入 cupy 并用 cp 作为别名。
+2. 使用 cp.copy 替代 numpy 的复制操作。
+3. 使用 cp.dstack 替代 numpy 的堆叠操作。
+
 请注意，cupy 的数组操作与 numpy 基本相同，但为了确保代码运行在 GPU 上，所有的数组操作都需要用 cupy 替代 numpy。另外，还需要确保 im1、im2 和 mask 这些输入也是 cupy 数组。如果它们是 numpy 数组，可以使用 cp.asarray 将它们转换为 cupy 数组。
 
-```
+```python
 import numpy as np
 import cupy as cp
 
 def blit(im1, im2, pos=None, mask=None, ismask=False):
     """ Blit an image over another.
-    
+
     Blits ``im1`` on ``im2`` as position ``pos=(x,y)``, using the
     ``mask`` if provided. If ``im1`` and ``im2`` are mask pictures
     (2D float arrays) then ``ismask`` must be ``True``.
@@ -67,58 +67,58 @@ def blit(im1, im2, pos=None, mask=None, ismask=False):
             mask = cp.dstack(3 * [mask])
         blit_region = new_im2[yp1:yp2, xp1:xp2]
         new_im2[yp1:yp2, xp1:xp2] = (1.0 * mask * blitted + (1.0 - mask) * blit_region)
-    
+
     return new_im2.astype('uint8') if (not ismask) else new_im2
 ```
 
-替换color\_gradient函数：
+## 替换color_gradient函数
 
-```
+```python
 def color_gradient(size, p1, p2=None, vector=None, r=None, col1=0, col2=1.0,
                    shape='linear', offset=0):
     w, h = size
-    
+
     col1 = cp.array(col1).astype(float)
     col2 = cp.array(col2).astype(float)
-    
+
     if shape == 'bilinear':
         if vector is None:
             vector = cp.array(p2) - cp.array(p1)
-        
+
         m1, m2 = [ color_gradient(size, p1, vector=v, col1=1.0, col2=0,
                                   shape='linear', offset=offset)
                    for v in [vector, -vector]]
-        
+
         arr = cp.maximum(m1, m2)
         if col1.size > 1:
             arr = cp.dstack(3 * [arr])
         return arr * col1 + (1 - arr) * col2
-    
+
     p1 = cp.array(p1[::-1]).astype(float)
-    
+
     if vector is None and p2:
         p2 = cp.array(p2[::-1])
         vector = p2 - p1
     else:
         vector = cp.array(vector[::-1])
         p2 = p1 + vector
-    
+
     if vector:
         norm = cp.linalg.norm(vector)
-    
+
     M = cp.dstack(cp.meshgrid(range(w), range(h))[::-1]).astype(float)
-    
+
     if shape == 'linear':
-        
+
         n_vec = vector / norm**2
-        
+
         p1 = p1 + offset * vector
         arr = (M - p1).dot(n_vec) / (1 - offset)
         arr = cp.minimum(1, cp.maximum(0, arr))
         if col1.size > 1:
             arr = cp.dstack(3 * [arr])
         return arr * col1 + (1 - arr) * col2
-    
+
     elif shape == 'radial':
         if r is None:
             r = norm
@@ -129,18 +129,17 @@ def color_gradient(size, p1, p2=None, vector=None, r=None, col1=0, col2=1.0,
             arr = (cp.sqrt(((M - p1) ** 2).sum(axis=2))) - offset * r
             arr = arr / ((1 - offset) * r)
             arr = cp.minimum(1.0, cp.maximum(0, arr))
-            
+
         if col1.size > 1:
             arr = cp.dstack(3 * [arr])
         return (1 - arr) * col1 + arr * col2
 ```
 
-2、修改 moviepy/video/compositing/CompositeVideoClip.py
-----------------------------------------------------
+## 2、修改 moviepy/video/compositing/CompositeVideoClip.py
 
-要将 CompositeVideoClip.py 中的代码修改为支持 cupy 加速，我们需要将涉及 numpy 操作的部分替换为 cupy 操作。通过这些修改，CompositeVideoClip 类和 clips\_array 函数可以利用 cupy 提供的 GPU 加速功能，从而提高处理视频剪辑的效率。
+要将 CompositeVideoClip.py 中的代码修改为支持 cupy 加速，我们需要将涉及 numpy 操作的部分替换为 cupy 操作。通过这些修改，CompositeVideoClip 类和 clips_array 函数可以利用 cupy 提供的 GPU 加速功能，从而提高处理视频剪辑的效率。
 
-```
+```python
 import numpy as np
 import cupy as cp
 
@@ -151,11 +150,11 @@ from moviepy.video.VideoClip import ColorClip, VideoClip
 
 class CompositeVideoClip(VideoClip):
 
-    """ 
-    
+    """
+
     A VideoClip made of other videoclips displayed together. This is the
     base class for most compositions.
-    
+
     Parameters
     ----------
 
@@ -166,11 +165,11 @@ class CompositeVideoClip(VideoClip):
       A list of videoclips. Each clip of the list will
       be displayed below the clips appearing after it in the list.
       For each clip:
-       
+
       - The attribute ``pos`` determines where the clip is placed.
           See ``VideoClip.set_pos``
       - The mask of the clip determines which parts are visible.
-        
+
       Finally, if all the clips in the list have their ``duration``
       attribute set, then the duration of the composite video clip
       is computed automatically
@@ -183,8 +182,8 @@ class CompositeVideoClip(VideoClip):
       Set to True if the first clip in the list should be used as the
       'background' on which all other clips are blitted. That first clip must
       have the same size as the final clip. If it has no transparency, the final
-      clip will have no mask. 
-    
+      clip will have no mask.
+
     The clip with the highest FPS will be the FPS of the composite clip.
 
     """
@@ -195,12 +194,12 @@ class CompositeVideoClip(VideoClip):
         if size is None:
             size = clips[0].size
 
-        
+
         if use_bgclip and (clips[0].mask is None):
             transparent = False
         else:
             transparent = (bg_color is None)
-        
+
         if bg_color is None:
             bg_color = 0.0 if ismask else (0, 0, 0)
 
@@ -208,7 +207,7 @@ class CompositeVideoClip(VideoClip):
         self.fps = max(fpss) if fpss else None
 
         VideoClip.__init__(self)
-        
+
         self.size = size
         self.ismask = ismask
         self.clips = clips
@@ -223,7 +222,7 @@ class CompositeVideoClip(VideoClip):
             self.bg = ColorClip(size, color=self.bg_color)
             self.created_bg = True
 
-        
+
         # compute duration
         ends = [c.end for c in self.clips]
         if None not in ends:
@@ -287,19 +286,19 @@ def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
        regions to be transparent (will be slower).
 
     """
-    
+
     array = cp.array(array)
     sizes_array = cp.array([[c.size for c in line] for line in array])
-    
+
     # find row width and col_widths automatically if not provided
     if rows_widths is None:
         rows_widths = sizes_array[:,:,1].max(axis=1)
     if cols_widths is None:
         cols_widths = sizes_array[:,:,0].max(axis=0)
-    
-    xx = cp.cumsum([0] + list(cols_widths)) 
+
+    xx = cp.cumsum([0] + list(cols_widths))
     yy = cp.cumsum([0] + list(rows_widths))
-    
+
     for j, (x, cw) in enumerate(zip(xx[:-1], cols_widths)):
         for i, (y, rw) in enumerate(zip(yy[:-1], rows_widths)):
             clip = array[i, j]
@@ -309,35 +308,34 @@ def clips_array(array, rows_widths=None, cols_widths=None, bg_color=None):
                                           size=(cw, rw),
                                           bg_color=bg_color).
                                      set_duration(clip.duration))
-                
+
             array[i, j] = clip.set_position((x, y))
-                 
+
     return CompositeVideoClip(array.flatten(), size=(xx[-1], yy[-1]), bg_color=bg_color)
 ```
 
-3、修改 moviepy/Clip.py
---------------------
+## 3、修改 moviepy/Clip.py
 
-在 iter\_frames 方法中修改以下部分：
+在 iter_frames 方法中修改以下部分：
 
-```
+```python
 if (dtype is not None) and (frame.dtype != dtype):
     frame = cp.asnumpy(frame).astype(dtype)
 ```
 
-4、修改 moviepy/video/VideoClip.py
--------------------------------
+## 4、修改 moviepy/video/VideoClip.py
 
 导入 cupy:
+
 在文件头部添加 cupy 的导入。
 
-```
+```python
 import cupy as cp
 ```
 
-修改 fill\_array 方法:
+## 修改 fill_array 方法
 
-```
+```python
 def fill_array(self, pre_array, shape=(0, 0)):
     pre_shape = pre_array.shape
     dx = shape[0] - pre_shape[0]
@@ -356,9 +354,9 @@ def fill_array(self, pre_array, shape=(0, 0)):
     return post_array
 ```
 
-修改 blit\_on 方法:
+## 修改 blit_on 方法
 
-```
+```python
 def blit_on(self, picture, t):
     """
     Returns the result of the blit of the clip's frame at time `t`
@@ -375,8 +373,8 @@ def blit_on(self, picture, t):
     # GET IMAGE AND MASK IF ANY
 
     img = self.get_frame(ct)
-    mask = self.mask.get_frame(ct) if self.mask else None                
-    
+    mask = self.mask.get_frame(ct) if self.mask else None
+
     if mask is not None and ((img.shape[0] != mask.shape[0]) or (img.shape[1] != mask.shape[1])):
         img = self.fill_array(img, mask.shape)
 
@@ -414,9 +412,9 @@ def blit_on(self, picture, t):
     return blit(img, picture, pos, mask=mask, ismask=self.ismask)
 ```
 
-修改 to\_RGB 方法:
+## 修改 to_RGB 方法
 
-```
+```python
 def to_RGB(self):
     """Return a non-mask video clip made from the mask video clip."""
     if self.ismask:
@@ -428,9 +426,9 @@ def to_RGB(self):
         return self
 ```
 
-修改 ImageClip 的 \_\_init\_\_ 方法:
+## 修改 ImageClip 的 __init__ 方法
 
-```
+```python
 class ImageClip(VideoClip):
     """Class for non-moving VideoClips.
 
@@ -493,9 +491,9 @@ class ImageClip(VideoClip):
         self.img = img
 ```
 
-修改 ColorClip 的 \_\_init\_\_ 方法:
+## 修改 ColorClip 的 __init__ 方法
 
-```
+```python
 class ColorClip(ImageClip):
     """An ImageClip showing just one color.
 
@@ -533,9 +531,9 @@ class ColorClip(ImageClip):
                            ismask=ismask, duration=duration)
 ```
 
-修改 TextClip 的 \_\_init\_\_ 方法:
+## 修改 TextClip 的 __init__ 方法
 
-```
+```python
 class TextClip(ImageClip):
     """Class for autogenerated text clips.
 
@@ -719,10 +717,9 @@ class TextClip(ImageClip):
         return [name for name in names_list if string in name.lower()]
 ```
 
-5、修改 moviepy\video\fx\fadein.py
--------------------------------
+## 5、修改 moviepy\video\fx\fadein.py
 
-```
+```python
 import cupy as cp
 
 def fadein(clip, duration, initial_color=None):
@@ -736,9 +733,9 @@ def fadein(clip, duration, initial_color=None):
 
     if initial_color is None:
         initial_color = 0 if clip.ismask else [0, 0, 0]
-    
+
     initial_color = cp.array(initial_color)
-    
+
     def fl(gf, t):
         if t >= duration:
             return gf(t)
@@ -749,10 +746,9 @@ def fadein(clip, duration, initial_color=None):
     return clip.fl(fl)
 ```
 
-6、修改 moviepy\video\fx\fadeout.py
---------------------------------
+## 6、修改 moviepy\video\fx\fadeout.py
 
-```
+```python
 import cupy as cp
 
 from moviepy.decorators import requires_duration
@@ -767,10 +763,10 @@ def fadeout(clip, duration, final_color=None):
     For cross-fading (progressive appearance or disappearance of a clip
     over another clip, see ``composition.crossfade``
     """
-    
+
     if final_color is None:
         final_color = 0 if clip.ismask else [0, 0, 0]
-    
+
     final_color = cp.array(final_color)
 
     def fl(gf, t):
@@ -783,10 +779,9 @@ def fadeout(clip, duration, final_color=None):
     return clip.fl(fl)
 ```
 
-7、修改 moviepy\video\io\ffmpeg\_writer.py
----------------------------------------
+## 7、修改 moviepy\video\io\ffmpeg_writer.py
 
-```
+```python
 """
 On the long term this will implement several methods to make videos
 out of VideoClips
@@ -1068,10 +1063,9 @@ def ffmpeg_write_image(filename, image, logfile=False):
     del proc
 ```
 
-8、修改 moviepy\video\io\ffmpeg\_reader.py
----------------------------------------
+## 8、修改 moviepy\video\io\ffmpeg_reader.py
 
-```
+```python
 """
 This module implements all the functions to read a video or a picture
 using ffmpeg. It is quite ugly, as there are many pitfalls to avoid
@@ -1446,10 +1440,9 @@ def ffmpeg_parse_infos(filename, print_infos=False, check_duration=True,
     return result
 ```
 
-9、修改 moviepy\video\io\VideoFileClip.py
---------------------------------------
+## 9、修改 moviepy\video\io\VideoFileClip.py
 
-```
+```python
 import os
 import cupy as cp
 
@@ -1462,6 +1455,7 @@ from moviepy.video.VideoClip import VideoClip
 class VideoFileClip(VideoClip):
 
     """
+
 
     A video clip originating from a movie file. For instance: ::
 
@@ -1514,17 +1508,18 @@ class VideoFileClip(VideoClip):
 
     fps:
       Frames per second in the original file.
-    
-    
+
+
     Read docs for Clip() and VideoClip() for other, more generic, attributes.
-    
+
     Lifetime
     --------
-    
+
     Note that this creates subprocesses and locks files. If you construct one of these instances, you must call
     close() afterwards, or the subresources will not be cleaned up until the process ends.
-    
-    If copies are made, and close() is called on one, it may cause methods on the other copies to fail.  
+
+    If copies are made, and close() is called on one, it may cause methods on the other copies to fail.
+
 
     """
 
@@ -1555,7 +1550,7 @@ class VideoFileClip(VideoClip):
 
         if has_mask:
 
-            self.make_frame = lambda t: cp.asarray(self.reader.get_frame(t)[:,:,:3])
+            self.make_frame = lambda t: cp.asarray(self.reader.get_frame(t)[:,:,:3]
             mask_mf = lambda t: cp.asarray(self.reader.get_frame(t)[:,:,3]) / 255.0
             self.mask = (VideoClip(ismask=True, make_frame=mask_mf)
                          .set_duration(self.duration))

@@ -2,8 +2,8 @@
 
 本程序代码为《手把手教你学51单片机》5.4的课后练习题5，并且已经在KST-51 v1.3.2开发板验证通过。
 
-```
-#include 
+```text
+#include <reg52.h>
 
 sbit ADDR0 = P1^0;
 sbit ADDR1 = P1^1;
@@ -18,7 +18,7 @@ unsigned char code LedChar[16] = {
 };
 
 unsigned int cnt = 0;       //记录进入Timer0中断次数
-unsigned char sec = 15;     //记录经过的秒数，倒计时初值15,也可以写成十六进制的形式(0x0F)
+unsigned char sec = 15;     //记录经过的秒数，倒计时初值15，也可以写成十六进制的形式(0x0F)
 bit flag1s = 0;             //定义一个bit形的变量，作为1秒的标志位
 
 void main(){

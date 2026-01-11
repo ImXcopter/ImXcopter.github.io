@@ -1,9 +1,9 @@
 # 51单片机 - 自定义时间秒表倒计时代码
 
-本次代码练习，是学习完《手把手教你学51单片机(C语言版)》第十章的一个综合练习。
+本次代码练习，是学习完《手把手教你学51单片机(C 语言版)》第十章的一个综合练习。
 
-```
-#include 
+```text
+#include <reg52.h>
 
 sbit BUZZ = P1^6;
 sbit ADDR3 = P1^3;
@@ -132,7 +132,7 @@ void StopWatchDisplay(){
     buff[3] = integerPart / 10 % 10;        //从最右侧数第3个数码管整数部分
     buff[4] = integerPart / 100 % 10;       //从最右侧数第4个数码管整数部分
     buff[5] = integerPart / 1000 % 10;      //从最右侧数第5个数码管整数部分
-    
+
     for (i = 5; i >= 3; i--)                //从最高位起，遇到数值为0的转换为不显示，遇到非0退出循环
     {
         if (buff[i] == 0)
@@ -291,7 +291,7 @@ void KeyScan()
     {
         case 0: keyOut4 = 1; keyOut1 = 0; break;
         case 1: keyOut1 = 1; keyOut2 = 0; break;
-        case 2: keyOut2 = 1; keyOut3 = 0; break;     
+        case 2: keyOut2 = 1; keyOut3 = 0; break;
         case 3: keyOut3 = 1; keyOut4 = 0; break;
         default: break;
     }

@@ -1,11 +1,11 @@
 # 51单片机 - 1602液晶显示游动字体Coding练习
 
-效果展示：
-[bradmax\_video url="https://xcopter.cc/wp-content/uploads/2023/04/20230410-150.mp4" duration="19" poster="/static/2023/2023-04-10-51mcu-lcd1602-scrolling-text\_001.png"]
+**效果展示：[视频演示](https://xcopter.cc/wp-content/uploads/2023/04/20230410-150.mp4)**
+
 本程序代码为《手把手教你学51单片机》13.2的例程修改版，主程序中将2个不同的字符串数组分别赋值，本代码已经在KST-51 v1.3.2开发板验证通过。
 
-```
-#include 
+```text
+#include <reg52.h>
 #define LCD1602_DB P0
 
 sbit LCD1602_RS = P1^0;
@@ -70,7 +70,7 @@ void main()
 			//这里的buffMove1和buffMove2是数组指针，等同于&buffMove1[0]和&buffMove2[0]，传递的是地址
 			//16来限制在显示字符串时只显示其前 len 个字符，以保证字符串长度的正确性
 			index++;										//进入Timer0中断1次，地址索引值加1
-			if (index >= (16 + sizeof(str2) - 1))			//起始位置到达字符串尾部后，即返回从头开始	
+			if (index >= (16 + sizeof(str2) - 1))			//起始位置到达字符串尾部后，即返回从头开始
 			{												//这里使用str2，是因为str2要显示的字符比str1多
 				index = 0;
 			}
