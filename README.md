@@ -66,7 +66,6 @@
 - [Discuz论坛多合一聚合支付接口插件](archives/2023/2023-05-03-discuz-payment-gateway-plugin.md)
 - [ESP32-S3-DevKitC-1开发板在不同版本的IDE做蓝牙开发遇到的问题](archives/2023/2023-03-01-esp32s3-bluetooth-ide-issue.md)
 - [HTML可以嵌入PHP“ if”语句中吗？](archives/2023/2023-03-26-embed-html-in-php-if.md)
-- [How to Integrate Google reCAPTCHA with PHP](archives/2023/2023-03-25-php-google-recaptcha.md)
 - [MySQL ID重新排列方法](archives/2023/2023-03-01-mysql-reset-id.md)
 - [PHP连接2个字符串的8个方法](archives/2023/2023-03-26-php-string-concatenation.md)
 - [RC - 2种高频头阵脚定义](archives/2023/2023-05-30-rc-rf-module-pinout.md)
