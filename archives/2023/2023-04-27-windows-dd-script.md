@@ -65,7 +65,7 @@ wget --no-check-certificate -O NewReinstall.sh https://cdn.jsdelivr.net/gh/fcurr
 ###本站镜像
 
 ```bash
-wget --no-check-certificate -O NewReinstall.sh https://xcopter.cc/down/NewReinstall.sh && chmod a+x NewReinstall.sh && bash NewReinstall.sh
+wget --no-check-certificate -O NewReinstall.sh https://xcopter.cc/src/NewReinstall.sh && chmod a+x NewReinstall.sh && bash NewReinstall.sh
 ```
 
 ![](/static/2023/2023-04-27-windows-dd-script_001.png)
