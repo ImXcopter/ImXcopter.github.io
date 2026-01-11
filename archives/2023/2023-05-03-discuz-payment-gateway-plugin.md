@@ -35,7 +35,7 @@ Discuz 论坛多合一聚合支付接口插件，该插件直接替换了自带�
 ## 下载地址
 
 - 下载链接：https://wwi.lanzoub.com/ikvVA0ujeknc
-- 本地下载：[unifiedpay](https://xcopter.cc/wp-content/uploads/2023/05/20230503-153.zip)
+- 本地下载：[unifiedpay](https://attachment.xcopter.cc/2023/unifiedpay.zip)
 
 ## 使用方法
 
