@@ -2,7 +2,7 @@
 
 **效果展示：**
 
-> 效果视频：https://xcopter.cc/wp-content/uploads/2023/03/20230319-68.mp4
+> [点击播放效果视频](https://attachment.xcopter.cc/2023/2023-03-19-51mcu-matrix-segment-led-contro.mp4)
 
 本程序代码为《手把手教你学 51 单片机》7.6 的课后练习题 6，并且已经在 KST-51 v1.3.2 开发板验证通过。
 
