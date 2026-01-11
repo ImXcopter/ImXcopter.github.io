@@ -1,6 +1,4 @@
-# 归档文档
-
-本仓库包含从 WordPress 导出的所有文章归档。
+Xcopter.cc's Blog
 
 ---
 
