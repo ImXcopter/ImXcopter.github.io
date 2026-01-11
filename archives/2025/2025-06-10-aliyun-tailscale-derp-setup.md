@@ -462,13 +462,13 @@ sudo systemctl status derper.service
 
 ### 一、修改主机名
 
-1. 设置主机名
+设置主机名
 
 ```bash
 hostnamectl set-hostname aliyun-beijing
 ```
 
-2. 配置 `/etc/hosts`（非常重要）
+ 配置 `/etc/hosts`（非常重要）
 
 ```bash
 cat > /etc/hosts <<EOF
@@ -477,7 +477,7 @@ x.x.x.x aliyun-beijing
 EOF
 ```
 
-3. 重启生效
+重启生效
 
 ```bash
 reboot
@@ -485,23 +485,23 @@ reboot
 
 ### 二、安装 Go 1.25.5（手动方式）
 
-1. 更新本地的软件包索引
+更新本地的软件包索引
 
 ```bash
 apt update
 ```
 
-2. 手动下载 Go 安装包，文件名：go1.25.5.linux-amd64.tar.gz
+手动下载 Go 安装包，文件名：go1.25.5.linux-amd64.tar.gz
 
 通过 SFTP 上传到 `/root` 目录。
 
-3. 解压并安装
+解压并安装
 
 ```bash
 rm -rf /usr/local/go && tar -C /usr/local -xzf go1.25.5.linux-amd64.tar.gz
 ```
 
-4. 配置 Go 环境变量
+配置 Go 环境变量
 
 ```bash
 export PATH=$PATH:/usr/local/go/bin
@@ -513,7 +513,7 @@ export PATH=$PATH:/usr/local/go/bin
 go version
 ```
 
-5. 配置 Go 国内代理
+配置 Go 国内代理
 
 ```bash
 go env -w GOPROXY=https://goproxy.cn,direct
@@ -521,13 +521,13 @@ go env -w GOPROXY=https://goproxy.cn,direct
 
 ### 三、安装并准备 derper
 
-1. 编译 derper
+编译 derper
 
 ```bash
 go install tailscale.com/cmd/derper@latest
 ```
 
-2. 安装到系统路径
+安装到系统路径
 
 ```bash
 cp ~/go/bin/derper /usr/local/bin/
@@ -541,27 +541,27 @@ which derper
 
 ### 四、准备证书与配置目录
 
-1. 创建证书目录
+创建证书目录
 
 ```bash
 mkdir -p ~/certdir
 cd ~/certdir
 ```
 
-2. 手动上传证书与代码
+手动上传证书与代码
 
 通过 SFTP 上传以下文件到 `/root/certdir/`：
 
 - main.go
 - 证书文件
 
-3. 测试运行
+测试运行
 
 ```bash
 go run main.go
 ```
 
-4. 切换回上级目录
+切换回上级目录
 
 ```bash
 cd ..
@@ -581,30 +581,30 @@ tailscale up
 
 ### 六、配置 derper systemd 服务
 
-1. 上传服务文件
+上传服务文件
 
 通过 SFTP 上传 `derper.service` 到 `/etc/systemd/system/`
 
-2. 重新加载 systemd
+重新加载 systemd
 
 ```bash
 systemctl daemon-reexec
 systemctl daemon-reload
 ```
 
-3. 启动服务
+启动服务
 
 ```bash
 systemctl start derper.service
 ```
 
-4. 设置开机自启
+设置开机自启
 
 ```bash
 systemctl enable derper.service
 ```
 
-5. 查看运行状态
+查看运行状态
 
 ```bash
 systemctl status derper.service
