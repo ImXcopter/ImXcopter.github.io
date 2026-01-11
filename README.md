@@ -1,2 +1,89 @@
-# ImXcopter.github.io
-Xcopter's Blog
+# 归档文档
+
+本仓库包含从 WordPress 导出的所有文章归档。
+
+---
+
+## 2025
+
+- [Debian安装nginx 并配置带自动更新 SSL 证书的完整安装流程](archives/2025/2025-02-15-Debian安装nginx 并配置带自动更新 SSL 证书的完整安装流程.md)
+- [Windows Server 2008 2012 2016 2019 2022服务器系统设置使用图片查看器](archives/2025/2025-01-24-Windows Server 2008 2012 2016 2019 2022服务器系统设置使用图片查看器.md)
+- [immortalwrt x86/64软路由物理安装](archives/2025/2025-06-28-immortalwrt x8664软路由物理安装.md)
+- [nul文件无法删除的解决方法](archives/2025/2025-12-23-nul文件无法删除的解决方法.md)
+- [中转Edge TTS并兼容OpenAI TTS的接口](archives/2025/2025-02-09-中转Edge TTS并兼容OpenAI TTS的接口.md)
+- [使用官方脚本一键安装docker|安装docker-compose](archives/2025/2025-06-05-使用官方脚本一键安装docker｜安装docker-compose.md)
+- [安装Midjourney Proxy小记](archives/2025/2025-06-15-安装Midjourney Proxy小记.md)
+- [电位器转换PWM输出Arduino代码](archives/2025/2025-06-09-电位器转换PWM输出Arduino代码.md)
+- [远程桌面修改3389端口代码](archives/2025/2025-07-02-远程桌面修改3389端口代码.md)
+- [阿里云安装Tailscale DERP小记](archives/2025/2025-06-10-阿里云安装Tailscale DERP小记.md)
+- [霍尔开关低电平PNP和高电平NPN输出的区别](archives/2025/2025-03-14-霍尔开关低电平PNP和高电平NPN输出的区别.md)
+
+## 2024
+
+- [Arduino模拟发送编码器](archives/2024/2024-10-14-Arduino模拟发送编码器.md)
+- [CentOS7.9 修改默认SSH端口一键脚本](archives/2024/2024-05-29-CentOS7.9 修改默认SSH端口一键脚本.md)
+- [CorelDRAW Graphics Suite 安装提示：A newer version of this application is already installed.Installation stopped. 解决办法](archives/2024/2024-03-05-CorelDRAW Graphics Suite 安装提示：A newer version of this application is already installed.Installation stopped. 解决办法.md)
+- [FRP内网穿透安装](archives/2024/2024-05-29-FRP内网穿透安装.md)
+- [Python下moviepy加速的环境配置](archives/2024/2024-10-28-Python下moviepy加速的环境配置.md)
+- [Windows 使用OpenSSH端口转发连接远程桌面](archives/2024/2024-05-29-Windows 使用OpenSSH端口转发连接远程桌面.md)
+- [Windows设置frpc开机自动启动(不管用户是否登陆都要运行)](archives/2024/2024-05-29-Windows设置frpc开机自动启动(不管用户是否登陆都要运行).md)
+- [moviepy用GPU加速的方法 - cupy](archives/2024/2024-07-13-moviepy用GPU加速的方法 - cupy.md)
+- [moviepy用GPU加速的方法 - torch](archives/2024/2024-07-10-moviepy用GPU加速的方法 - torch.md)
+- [使用 Chrome 命令行将HTML生成PDF](archives/2024/2024-12-25-使用 Chrome 命令行将HTML生成PDF.md)
+- [检测CUDA、cuDNN、Pytorch是否可用](archives/2024/2024-07-10-检测CUDA、cuDNN、Pytorch是否可用.md)
+
+## 2023
+
+- [51单片机 - 1602液晶显示字符串（指针方式）](archives/2023/2023-04-10-51单片机 - 1602液晶显示字符串（指针方式）.md)
+- [51单片机 - 1602液晶显示字符串（非指针方式）](archives/2023/2023-04-09-51单片机 - 1602液晶显示字符串（非指针方式）.md)
+- [51单片机 - 1602液晶显示游动字体Coding练习](archives/2023/2023-04-10-51单片机 - 1602液晶显示游动字体Coding练习.md)
+- [51单片机 - LED灯显示二进制代码](archives/2023/2023-03-14-51单片机 - LED灯显示二进制代码.md)
+- [51单片机 - PWM控制P0口Led呼吸灯](archives/2023/2023-04-04-51单片机 - PWM控制P0口Led呼吸灯.md)
+- [51单片机 - 使用定时器T1中断完成从999999的倒计时](archives/2023/2023-03-14-51单片机 - 使用定时器T1中断完成从999999的倒计时.md)
+- [51单片机 - 使用定时器来实现左右移动的流水灯程序](archives/2023/2023-03-13-51单片机 - 使用定时器来实现左右移动的流水灯程序.md)
+- [51单片机 - 关于定时器与频率的一些问题](archives/2023/2023-04-04-51单片机 - 关于定时器与频率的一些问题.md)
+- [51单片机 - 实现数码管静态显示秒表倒计时代码](archives/2023/2023-03-14-51单片机 - 实现数码管静态显示秒表倒计时代码.md)
+- [51单片机 - 数码管图片帧刷新coding训练](archives/2023/2023-03-16-51单片机 - 数码管图片帧刷新coding训练.md)
+- [51单片机 - 独立按键消抖Coding练习](archives/2023/2023-03-25-51单片机 - 独立按键消抖Coding练习.md)
+- [51单片机 - 矩阵按键](archives/2023/2023-03-26-51单片机 - 矩阵按键.md)
+- [51单片机 - 秒表程序Coding练习](archives/2023/2023-04-03-51单片机 - 秒表程序Coding练习.md)
+- [51单片机 - 秒表计时代码](archives/2023/2023-03-14-51单片机 - 秒表计时代码.md)
+- [51单片机 - 自定义时间秒表倒计时代码](archives/2023/2023-04-06-51单片机 - 自定义时间秒表倒计时代码.md)
+- [51单片机 – LED灯显示二进制代码进阶版](archives/2023/2023-03-15-51单片机 – LED灯显示二进制代码进阶版.md)
+- [51单片机 – 同时点亮KST-51开发板的8x8点阵，LED数码管和LED小灯](archives/2023/2023-03-19-51单片机 – 同时点亮KST-51开发板的8x8点阵，LED数码管和LED小灯.md)
+- [51单片机 – 秒表计时代码（只显示有效位）](archives/2023/2023-03-14-51单片机 – 秒表计时代码（只显示有效位）.md)
+- [51单片机定时器GATE门控位的理解](archives/2023/2023-03-07-51单片机定时器GATE门控位的理解.md)
+- [74HC138真值表](archives/2023/2023-03-07-74HC138真值表.md)
+- [8051单片机特殊功能寄存器(SFR)详解](archives/2023/2023-03-02-8051单片机特殊功能寄存器(SFR)详解.md)
+- [Arduino的定时器中断](archives/2023/2023-03-15-Arduino的定时器中断.md)
+- [Arduino的定时器中断 - 基于库函数](archives/2023/2023-03-15-Arduino的定时器中断 - 基于库函数.md)
+- [BBR一键安装脚本 BBR/魔改/暴力/BBRplus/锐速（zeruns魔改版）](archives/2023/2023-03-01-BBR一键安装脚本 BBR魔改暴力BBRplus锐速（zeruns魔改版）.md)
+- [C51扩展数据类型（bit、sbit、sfr、sfr16）](archives/2023/2023-03-13-C51扩展数据类型（bit、sbit、sfr、sfr16）.md)
+- [C语言中，++i 与 i++的区别在哪里？](archives/2023/2023-03-01-C语言中，++i 与 i++的区别在哪里？.md)
+- [C语言中，if...和if...else if的区别是什么？](archives/2023/2023-03-07-C语言中，if...和if...else if的区别是什么？.md)
+- [C语言代码规范（编程规范）](archives/2023/2023-03-25-C语言代码规范（编程规范）.md)
+- [C语言变量命名规则](archives/2023/2023-03-25-C语言变量命名规则.md)
+- [Discuz论坛多合一聚合支付接口插件](archives/2023/2023-05-03-Discuz论坛多合一聚合支付接口插件.md)
+- [ESP32-S3-DevKitC-1开发板在不同版本的IDE做蓝牙开发遇到的问题](archives/2023/2023-03-01-ESP32-S3-DevKitC-1开发板在不同版本的IDE做蓝牙开发遇到的问题.md)
+- [HTML可以嵌入PHP“ if”语句中吗？](archives/2023/2023-03-26-HTML可以嵌入PHP“ if”语句中吗？.md)
+- [How to Integrate Google reCAPTCHA with PHP](archives/2023/2023-03-25-How to Integrate Google reCAPTCHA with PHP.md)
+- [MySQL ID重新排列方法](archives/2023/2023-03-01-MySQL ID重新排列方法.md)
+- [PHP连接2个字符串的8个方法](archives/2023/2023-03-26-PHP连接2个字符串的8个方法.md)
+- [RC - 2种高频头阵脚定义](archives/2023/2023-05-30-RC - 2种高频头阵脚定义.md)
+- [Recaptcha to Download a file HTML代码](archives/2023/2023-03-25-Recaptcha to Download a file HTML代码.md)
+- [Typecho免登陆接口文章发布模块](archives/2023/2023-03-25-Typecho免登陆接口文章发布模块.md)
+- [Typecho教程 - 自定义字段相关](archives/2023/2023-03-25-Typecho教程 - 自定义字段相关.md)
+- [【一起学51单片机】第1课 - 如何学习单片机及准备工作](archives/2023/2023-03-09-【一起学51单片机】第1课 - 如何学习单片机及准备工作.md)
+- [【一起学51单片机】第2课 - 点亮LED小灯](archives/2023/2023-03-02-【一起学51单片机】第2课 - 点亮LED小灯.md)
+- [一个Mach3的华丽界面 - PA Mach 3 Screen Set](archives/2023/2023-04-27-一个Mach3的华丽界面 - PA Mach 3 Screen Set.md)
+- [一键DD Windows脚本](archives/2023/2023-04-27-一键DD Windows脚本.md)
+- [什么叫可位寻址，什么叫不可位寻址？](archives/2023/2023-03-02-什么叫可位寻址，什么叫不可位寻址？.md)
+- [写中断程序要注意哪些方面？](archives/2023/2023-03-18-写中断程序要注意哪些方面？.md)
+- [发光二极管正负极怎么分？](archives/2023/2023-03-02-发光二极管正负极怎么分？.md)
+- [常见的三种命名规则：小驼峰命名法、大驼峰命名法、匈牙利命名法](archives/2023/2023-03-25-常见的三种命名规则：小驼峰命名法、大驼峰命名法、匈牙利命名法.md)
+- [微软Azure API申请教程](archives/2023/2023-12-18-微软Azure API申请教程.md)
+- [悟2拆解视频](archives/2023/2023-06-18-悟2拆解视频.md)
+- [时间单位换算](archives/2023/2023-03-25-时间单位换算.md)
+- [用定时器中断，单片机中断处理时间大于定时器定时的时间会怎样?](archives/2023/2023-03-25-用定时器中断，单片机中断处理时间大于定时器定时的时间会怎样？.md)
+- [详解三极管NPN与PNP区别](archives/2023/2023-03-06-详解三极管NPN与PNP区别.md)
+
