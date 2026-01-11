@@ -2,31 +2,31 @@
 
 以下操作均在 AlmaLinux 8 64 环境下测试成功：
 
-## 命令 1：安装依赖并更新
+### 命令 1：安装依赖并更新
 
 ```bash
 sudo dnf update -y && sudo dnf install -y dnf-plugins-core curl
 ```
 
-## 命令 2：添加 Docker 官方仓库
+### 命令 2：添加 Docker 官方仓库
 
 ```bash
 sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 ```
 
-## 命令 3：安装 Docker 组件
+### 命令 3：安装 Docker 组件
 
 ```bash
 sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin
 ```
 
-## 命令 4：启动 Docker 服务并配置用户组
+### 命令 4：启动 Docker 服务并配置用户组
 
 ```bash
 sudo systemctl start docker && sudo systemctl enable docker && sudo usermod -aG docker $USER
 ```
 
-## 命令 5：拉取 edge-tts-api 镜像并启动 API 服务
+### 命令 5：拉取 edge-tts-api 镜像并启动 API 服务
 
 ```bash
 docker run -d -p 7899:7899 --restart always jianchang512/edge-tts-api:latest
