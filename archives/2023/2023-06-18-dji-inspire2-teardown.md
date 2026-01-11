@@ -7,8 +7,6 @@
   你的浏览器不支持视频标签。
 </video>
 
-```HTML
+
 <video width="320" height="240" controls>
-    <source src="https://attachment.xcopter.cc/2023/2023-06-18-dji-inspire2-teardown.mp4" type="video/mp4">
-</video>
-```
+<video src="https://attachment.xcopter.cc/2023/2023-06-18-dji-inspire2-teardown.mp4" controls="controls" width="500" height="300"></video>
