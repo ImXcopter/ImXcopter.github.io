@@ -2,7 +2,7 @@
 
 **if...else 和 else if 在结构上的区别：**
 
-**if...else 结构：**
+***if...else 结构：**
 
 ```c
 if (条件表达式) {
@@ -16,7 +16,7 @@ if (条件表达式) {
 
 ![if...else 结构图](/static/2023/2023-03-07-c-if-vs-else-if_001.png)
 
-**else if 结构：**
+***else if 结构：**
 
 ```c
 if (条件表达式1) {
