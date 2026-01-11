@@ -491,11 +491,7 @@ reboot
 apt update
 ```
 
-2. 手动下载 Go 安装包，文件名：
-
-```bash
-go1.25.5.linux-amd64.tar.gz
-```
+2. 手动下载 Go 安装包，文件名：go1.25.5.linux-amd64.tar.gz
 
 通过 SFTP 上传到 `/root` 目录。
 
