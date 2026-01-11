@@ -8,5 +8,4 @@
 </video>
 
 
-<video width="320" height="240" controls>
-<video src="https://attachment.xcopter.cc/2023/2023-06-18-dji-inspire2-teardown.mp4" controls="controls" width="500" height="300"></video>
+<video src="https://attachment.xcopter.cc/2023/2023-06-18-dji-inspire2-teardown.mp4" controls="controls" width:100% height:auto></video>
