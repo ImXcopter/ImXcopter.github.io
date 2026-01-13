@@ -1,6 +1,9 @@
 Xcopter's Blog
 
 ---
+## 2026
+
+- [VoxCPM全量微调教程](archives/2026/2026-1-13-voxcpm-finetune-all-tutorial.md)
 
 ## 2025
 
