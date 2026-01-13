@@ -34,7 +34,7 @@
 
 访问 [Google AI Studio](https://aistudio.google.com) 使用 AI 辅助处理。
 
-### 2.2 处理 Prompt
+### 2.2 处理 SRT文件
 
 将以下 Prompt 提供给 AI 模型,并附上原始 SRT 文件:
 
