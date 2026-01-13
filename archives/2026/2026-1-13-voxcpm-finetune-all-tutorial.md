@@ -1019,6 +1019,7 @@ lambdas:
 注意修改训练.sh的py文件的名称，不是voxcpm_finetune_lora.yaml，而是voxcpm_finetune_all.yaml
 ```
 cd /root/VoxCPM
+
 python scripts/train_voxcpm_finetune.py --config_path conf/voxcpm_v1.5/voxcpm_finetune_all.yaml
 echo '------------------------end.'
 ```
