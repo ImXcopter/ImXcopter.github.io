@@ -110,7 +110,7 @@ VOXCPM_FT_PROJECT_PATH = r"D:\Project\TTS_ASR_Tools\VoxCPM_FT"
 
 # 要处理的音频和 SRT 文件（脚本所在目录下）
 AUDIO_FILENAME = "A01.wav"                # 音频文件名
-SRT_FILENAME = "A01_processed.srt"        # SRT 文件名
+SRT_FILENAME = "A01.srt"        # SRT 文件名
 
 # VAD 参数
 BUFFER_MS = 100           # SRT 时间定位 Buffer（前后扩展时长，单位：毫秒）
@@ -1001,7 +1001,7 @@ num_iters: 3000
 log_interval: 10
 valid_interval: 500
 save_interval: 500
-learning_rate: 0.00001
+learning_rate: 0.00001 
 weight_decay: 0.01
 warmup_steps: 100
 max_steps: 3000
@@ -1009,8 +1009,8 @@ max_batch_tokens: 8192  # Example: single batch can have at most 16k tokens, wit
 save_path: /root/autodl-tmp/checkpoints/finetune_all
 tensorboard: /root/autodl-tmp/logs/finetune_all
 lambdas:
-loss/diff: 1.0
-loss/stop: 1.0
+  loss/diff: 1.0
+  loss/stop: 1.0
 ```
 训练好的模型会在/root/autodl-tmp/checkpoints/finetune_all
 训练的日志会在/root/autodl-tmp/logs/finetune_all
@@ -1018,16 +1018,16 @@ loss/stop: 1.0
 
 注意修改训练.sh的py文件的名称，不是voxcpm_finetune_lora.yaml，而是voxcpm_finetune_all.yaml
 ```
-nohup python scripts/train_voxcpm_finetune.py \
-    --config_path conf/voxcpm_v1.5/voxcpm_finetune_all.yaml \
-    > /root/logs/train.log 2>&1 &
+cd /root/VoxCPM
+python scripts/train_voxcpm_finetune.py --config_path conf/voxcpm_v1.5/voxcpm_finetune_all.yaml
+echo '------------------------end.'
 ```
 ### 3.4 启动训练
 
 按照 AutoDL 平台提供的训练脚本执行即可:
 
-```bash
-bash train.sh
+```
+sh train.sh
 ```
 
 ---
