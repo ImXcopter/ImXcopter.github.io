@@ -15,3 +15,22 @@ HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAsso
 3. 在右侧新建字符串项：`.jpg` 和 `.png`，数据值为：`PhotoViewer.FileAssoc.Tiff`
 
 ![](/static/2025/2025-01-24-windows-server-enable-photo-viewer_001.png)
+
+或者将下面内容保存为文件名，例如：EnableWindowsPhotoViewer.reg，然后双击即可合并到注册表：
+
+```reg
+Windows Registry Editor Version 5.00
+
+; Enable Windows Photo Viewer file associations on Windows Server
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows Photo Viewer\Capabilities\FileAssociations]
+".tif"="PhotoViewer.FileAssoc.Tiff"
+".tiff"="PhotoViewer.FileAssoc.Tiff"
+".jpg"="PhotoViewer.FileAssoc.Tiff"
+".jpeg"="PhotoViewer.FileAssoc.Tiff"
+".png"="PhotoViewer.FileAssoc.Tiff"
+".bmp"="PhotoViewer.FileAssoc.Tiff"
+".gif"="PhotoViewer.FileAssoc.Tiff"
+
+; End of registry file
+```
