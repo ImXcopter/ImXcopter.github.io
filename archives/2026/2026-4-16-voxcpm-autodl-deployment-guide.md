@@ -233,7 +233,7 @@ Name: torchaudio
 Version: 2.8.0+cu128
 ```
 
-**关于 torchcodec**：`pip install -e .` 会同时装上 `torchcodec`，这是 VoxCPM 的正式依赖，**不需要卸载**。之前推理报 `libcudart.so.13` 错误的根源是 torchaudio 被升级到 2.11.0，不是 torchcodec 的问题。只要 torchaudio 版本对齐，torchcodec 留着不碍事。
+**关于 torchcodec**：`pip install -e .` 会同时装上 `torchcodec`，这是 VoxCPM 的正式依赖，**不需要卸载**。
 
 ---
 
