@@ -3,7 +3,8 @@ Xcopter's Blog
 ---
 ## 2026
 
-- [VoxCPM 全量微调完整指南](archives/2026/2026-1-13-voxcpm-finetune-all-tutorial.md)
+- [VoxCPM Autodl 全新环境部署完整指南](archives/2026/2026-4-16-voxcpm-autodl-deployment-guide.md)
+- [VoxCPM 全量微调完整指南](archives/2026/2026-4-16-voxcpm-finetune-all-tutorial.md)
 
 ## 2025
 
