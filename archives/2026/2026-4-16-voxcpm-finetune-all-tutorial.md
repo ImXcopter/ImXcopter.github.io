@@ -1166,18 +1166,7 @@ if __name__ == '__main__':
 | 训练数据 | `/root/autodl-tmp/datasheet/` |
 | Checkpoint 输出 | `/root/autodl-tmp/checkpoints/` |
 
-### 4.2 关键步骤摘要
-
-1. 创建独立 conda 环境：`conda create -n voxcpm python=3.11 -y`
-2. 安装 PyTorch 2.8 cu128
-3. 克隆 VoxCPM 源码并 `pip install -e .`
-4. 检查 torchaudio 版本（如被升级到 2.11.0 需压回 2.8.0+cu128）
-5. 安装 tensorboardX、tensorboard、modelscope
-6. 通过 ModelScope 下载基础模型（不用 HuggingFace，避免 Xet 401 认证问题）
-7. 预下载 SenseVoice-Small ASR 模型（WebUI 用）
-8. 推理冒烟测试确认环境正常
-
-### 4.3 交付脚本
+### 4.2 交付脚本
 
 部署完成后，`/root/` 下有三个交互式 sh 脚本：
 
