@@ -1210,7 +1210,114 @@ with open(in_path, "r", encoding="utf-8") as f_in, open(out_path, "w", encoding=
 print("Done. 重命名 train_data_linux.jsonl 为 train_data.jsonl 即可。")
 ```
 
-### 5.3 准备 yaml 配置文件
+### 5.3 拆分验证集
+
+训练时需要一个独立的验证集来监控过拟合——验证集的数据**不能出现在训练集里**（否则无法检测过拟合）。VoxCPM1.5 和 VoxCPM2 都适用，使用的是同一套训练脚本。
+
+使用 `split_train_val.py` 脚本从原始 JSONL 中随机拆分：
+
+```python
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+训练集 / 验证集拆分脚本
+
+将原始的 train.jsonl 随机拆分为：
+  - train_data.jsonl（训练集，90%）
+  - val_data.jsonl（验证集，10%）
+
+两个文件内容完全不重复，验证集用于训练时监控过拟合。
+原始文件不会被修改。
+"""
+
+import json
+import random
+from pathlib import Path
+
+# ============================================================================
+# 配置（用户可修改）
+# ============================================================================
+
+INPUT_FILE = "train.jsonl"            # 原始 JSONL 文件名（脚本同目录下）
+TRAIN_OUTPUT = "train_data.jsonl"     # 输出的训练集文件名
+VAL_OUTPUT = "val_data.jsonl"         # 输出的验证集文件名
+VAL_RATIO = 0.10                      # 验证集比例（0.10 = 10%）
+RANDOM_SEED = 42                      # 随机种子（固定种子保证每次拆分结果一致）
+
+# ============================================================================
+# 主逻辑
+# ============================================================================
+
+def main():
+    script_dir = Path(__file__).parent.resolve()
+    input_path = script_dir / INPUT_FILE
+    train_path = script_dir / TRAIN_OUTPUT
+    val_path = script_dir / VAL_OUTPUT
+
+    # 检查输入文件
+    if not input_path.exists():
+        print(f"❌ 输入文件不存在: {input_path}")
+        print(f"请将原始 JSONL 文件放在脚本同目录下，文件名为 {INPUT_FILE}")
+        return
+
+    # 读取所有行
+    with open(input_path, "r", encoding="utf-8") as f:
+        lines = [line.strip() for line in f if line.strip()]
+
+    total = len(lines)
+    if total == 0:
+        print("❌ 输入文件为空")
+        return
+
+    # 验证每行是合法 JSON
+    for i, line in enumerate(lines):
+        try:
+            json.loads(line)
+        except json.JSONDecodeError as e:
+            print(f"❌ 第 {i + 1} 行 JSON 格式错误: {e}")
+            return
+
+    # 随机打乱
+    random.seed(RANDOM_SEED)
+    random.shuffle(lines)
+
+    # 按比例拆分
+    val_count = max(1, int(total * VAL_RATIO))
+    train_count = total - val_count
+
+    val_lines = lines[:val_count]
+    train_lines = lines[val_count:]
+
+    # 写出训练集
+    with open(train_path, "w", encoding="utf-8") as f:
+        for line in train_lines:
+            f.write(line + "\n")
+
+    # 写出验证集
+    with open(val_path, "w", encoding="utf-8") as f:
+        for line in val_lines:
+            f.write(line + "\n")
+
+    # 打印结果
+    print("=" * 50)
+    print("✅ 拆分完成")
+    print("=" * 50)
+    print(f"  原始文件:   {input_path.name} ({total} 条)")
+    print(f"  训练集:     {train_path.name} ({train_count} 条)")
+    print(f"  验证集:     {val_path.name} ({val_count} 条)")
+    print(f"  验证集比例: {val_count / total * 100:.1f}%")
+    print(f"  随机种子:   {RANDOM_SEED}")
+    print()
+    print(f"两个文件内容完全不重复，可直接用于训练。")
+    print(f"原始文件 {INPUT_FILE} 未被修改。")
+
+if __name__ == "__main__":
+    main()
+```
+
+将脚本和原始 `train.jsonl` 放在同一目录下，运行 `python split_train_val.py` 即可生成 `train_data.jsonl` 和 `val_data.jsonl`。
+
+### 5.4 准备 yaml 配置文件
 
 在 `/root/autodl-tmp/datasheet/` 下放置一个 yaml 配置文件，文件名格式：
 - `voxcpm_finetune_all_v2.yaml` — VoxCPM2 全量微调
@@ -1221,7 +1328,7 @@ print("Done. 重命名 train_data_linux.jsonl 为 train_data.jsonl 即可。")
 yaml 里需要填写的关键路径：
 - `pretrained_path`: 基础模型路径（如 `/root/models/VoxCPM2`）
 - `train_manifest`: 训练数据清单（如 `/root/autodl-tmp/datasheet/train_data.jsonl`）
-- `val_manifest`: 验证集（可选，填 `null` 表示不使用）
+- `val_manifest`: 验证集清单（如 `/root/autodl-tmp/datasheet/val_data.jsonl`，填 `null` 表示不使用）
 - `save_path`: checkpoint 输出目录（如 `/root/autodl-tmp/checkpoints/xxx`）
 - `tensorboard`: TensorBoard 日志目录（如 `/root/autodl-tmp/logs/xxx`）
 
