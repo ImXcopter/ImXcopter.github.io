@@ -350,7 +350,7 @@ python -c "from voxcpm import VoxCPM; import soundfile as sf; m = VoxCPM.from_pr
 
 推理冒烟测试通过后，将以下 4 个文件通过 WinSCP 上传到 Autodl 的 `/root/` 目录下：
 
-- `1-run-webui.sh` — 推理 WebUI 启动脚本
+- `1-run-webui.sh` — WebUI 启动脚本（VoxCPM2 推理 / VoxCPM1.5 推理 / LoRA 训练与推理，三选一）
 - `2-run-train.sh` — 微调训练启动脚本
 - `3-run-infer.sh` — 微调后推理脚本
 - `VoxCPM使用指南.txt` — 日常使用速查手册
@@ -365,7 +365,17 @@ sed -i 's/\r$//' /root/1-run-webui.sh /root/2-run-train.sh /root/3-run-infer.sh
 
 ---
 
-### 11.1 推理 WebUI 脚本（1-run-webui.sh）
+### 11.1 WebUI 启动脚本（1-run-webui.sh）
+
+VoxCPM-main 项目下有三个不同的 WebUI 入口，分别对应不同版本和功能：
+
+| 选项 | 入口文件 | 用途 |
+|---|---|---|
+| 1) VoxCPM2 推理 | `app.py` | VoxCPM2 专属界面（Voice Design / Controllable Cloning / Hi-Fi Cloning 三种模式） |
+| 2) VoxCPM1.5 推理 | `app_old.py` | VoxCPM1.5 专属界面（基础 TTS + Voice Cloning） |
+| 3) LoRA 训练与推理 | `lora_ft_webui.py` | LoRA 训练配置 + LoRA checkpoint 推理（支持 v1.5 和 v2） |
+
+脚本统一端口为 **6006**（Autodl 预开放端口），同时自动建符号链接解决模型路径问题，**不修改任何源码**。
 
 ```bash
 #!/bin/bash
@@ -377,68 +387,92 @@ sed -i 's/\r$//' /root/1-run-webui.sh /root/2-run-train.sh /root/3-run-infer.sh
 # 激活 voxcpm conda 环境（Python 3.11）
 eval "$(conda shell.bash hook 2>/dev/null)"
 conda activate voxcpm
-#
-# 首次运行会自动下载 SenseVoice-Small (ASR 模型，用于识别 prompt 音频)
-# 启动后在 Autodl 控制台的"自定义服务"或 SSH 隧道里把端口 6006 转发到本地，
-# 浏览器访问 http://127.0.0.1:6006 即可。
 
 echo "=========================================="
-echo "   VoxCPM 推理 WebUI 启动器"
+echo "   VoxCPM WebUI 启动器"
 echo "=========================================="
 echo ""
-echo "请选择要启动的模型版本:"
-echo "  1) VoxCPM2"
-echo "  2) VoxCPM1.5"
+echo "请选择要启动的界面:"
+echo "  1) VoxCPM2 推理 WebUI"
+echo "  2) VoxCPM1.5 推理 WebUI"
+echo "  3) LoRA 训练与推理 WebUI"
 echo ""
 read -p "请输入编号 [默认 1]: " CHOICE
 CHOICE="${CHOICE:-1}"
 
+cd /root/VoxCPM
+
 case "$CHOICE" in
     1)
+        # ===== VoxCPM2 推理 WebUI (app.py) =====
         MODEL_PATH="/root/models/VoxCPM2"
-        VERSION_TAG="VoxCPM2"
-        DOWNLOAD_HINT="python -c \"from modelscope import snapshot_download; snapshot_download('OpenBMB/VoxCPM2', local_dir='/root/models/VoxCPM2')\""
+        if [ ! -d "$MODEL_PATH" ]; then
+            echo ""
+            echo "❌ 模型目录不存在: $MODEL_PATH"
+            echo "请先下载: python -c \"from modelscope import snapshot_download; snapshot_download('OpenBMB/VoxCPM2', local_dir='$MODEL_PATH')\""
+            exit 1
+        fi
+        echo ""
+        echo ">>> 启动 VoxCPM2 推理 WebUI"
+        echo ">>> 模型: $MODEL_PATH"
+        echo ">>> 端口: 6006"
+        echo ">>> 按 Ctrl+C 退出"
+        echo ""
+        python app.py --model-id "$MODEL_PATH" --port 6006
         ;;
+
     2)
+        # ===== VoxCPM1.5 推理 WebUI (app_old.py) =====
         MODEL_PATH="/root/models/VoxCPM1.5"
-        VERSION_TAG="VoxCPM1.5"
-        DOWNLOAD_HINT="python -c \"from modelscope import snapshot_download; snapshot_download('OpenBMB/VoxCPM1.5', local_dir='/root/models/VoxCPM1.5')\""
+        if [ ! -d "$MODEL_PATH" ]; then
+            echo ""
+            echo "❌ 模型目录不存在: $MODEL_PATH"
+            echo "请先下载: python -c \"from modelscope import snapshot_download; snapshot_download('OpenBMB/VoxCPM1.5', local_dir='$MODEL_PATH')\""
+            exit 1
+        fi
+        # app_old.py 查找 ./models/VoxCPM1.5（相对路径），建符号链接指向真实位置
+        mkdir -p /root/VoxCPM/models
+        [ ! -e /root/VoxCPM/models/VoxCPM1.5 ] && ln -s "$MODEL_PATH" /root/VoxCPM/models/VoxCPM1.5
+        echo ""
+        echo ">>> 启动 VoxCPM1.5 推理 WebUI"
+        echo ">>> 模型: $MODEL_PATH"
+        echo ">>> 端口: 6006"
+        echo ">>> 按 Ctrl+C 退出"
+        echo ""
+        # app_old.py 没有 CLI 参数，用 python -c 调用 run_demo() 传入端口和监听地址
+        python -c "from app_old import run_demo; run_demo(server_name='0.0.0.0', server_port=6006)"
         ;;
+
+    3)
+        # ===== LoRA 训练与推理 WebUI (lora_ft_webui.py) =====
+        # 建符号链接让默认路径生效（可选，用户也可以在 UI 里手动填路径）
+        mkdir -p /root/VoxCPM/models
+        [ ! -e /root/VoxCPM/models/openbmb__VoxCPM2 ] && [ -d /root/models/VoxCPM2 ] && \
+            ln -s /root/models/VoxCPM2 /root/VoxCPM/models/openbmb__VoxCPM2
+        [ ! -e /root/VoxCPM/models/openbmb__VoxCPM1.5 ] && [ -d /root/models/VoxCPM1.5 ] && \
+            ln -s /root/models/VoxCPM1.5 /root/VoxCPM/models/openbmb__VoxCPM1.5
+        mkdir -p /root/VoxCPM/lora
+        echo ""
+        echo ">>> 启动 LoRA 训练与推理 WebUI"
+        echo ">>> 端口: 6006"
+        echo ">>> 预训练模型路径可在 UI 界面中修改"
+        echo ">>> 按 Ctrl+C 退出"
+        echo ""
+        # lora_ft_webui.py 默认端口 7860，用 python -c 改成 6006
+        python -c "
+import os, sys
+os.makedirs('lora', exist_ok=True)
+sys.path.insert(0, '.')
+from lora_ft_webui import app
+app.queue().launch(server_name='0.0.0.0', server_port=6006)
+"
+        ;;
+
     *)
         echo "❌ 无效选择: $CHOICE"
         exit 1
         ;;
 esac
-
-# 检查模型是否存在
-if [ ! -d "$MODEL_PATH" ]; then
-    echo ""
-    echo "❌ 模型目录不存在: $MODEL_PATH"
-    echo ""
-    echo "请先下载模型（记得关闭代理）:"
-    echo "    unset http_proxy && unset https_proxy"
-    echo "    $DOWNLOAD_HINT"
-    exit 1
-fi
-
-echo ""
-echo "=========================================="
-echo ">>> 启动 $VERSION_TAG 推理 WebUI"
-echo ">>> 模型路径: $MODEL_PATH"
-echo ">>> 端口:     6006"
-echo "=========================================="
-echo ""
-echo "启动后请在 Autodl 控制台的「自定义服务」打开 6006 端口"
-echo "或在本地 SSH 隧道转发: ssh -L 6006:localhost:6006 ..."
-echo ""
-echo "按 Ctrl+C 退出 WebUI"
-echo ""
-
-cd /root/VoxCPM
-
-python app.py \
-    --model-id "$MODEL_PATH" \
-    --port 6006
 
 echo ""
 echo '------------------------ WebUI 已退出'
@@ -1026,7 +1060,7 @@ A: 下次用 screen 挂后台再跑。screen -S train && bash /root/2-run-train.
 
 **直接用 sh 脚本**，脚本会自动激活 voxcpm 环境：
 ```bash
-bash /root/1-run-webui.sh     # 推理 WebUI
+bash /root/1-run-webui.sh     # WebUI（选 1=VoxCPM2 推理 / 2=VoxCPM1.5 推理 / 3=LoRA 训练与推理）
 bash /root/2-run-train.sh     # 启动训练
 bash /root/3-run-infer.sh     # 测试 checkpoint
 ```
