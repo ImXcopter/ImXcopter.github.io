@@ -1148,15 +1148,15 @@ if __name__ == '__main__':
 
 ---
 
-## 四、Autodl 云 GPU 环境部署
+## 四、AutoDL 算力云 GPU 环境部署
 
-详细的 Autodl 环境部署步骤请参考 **[VoxCPM Autodl 全新环境部署完整指南](https://xcopter.cc/archives/2026/2026-4-16-voxcpm-autodl-deployment-guide.html)**（VoxCPM Autodl 全新环境部署完整指南），此处仅列出关键要点：
+详细的 AutoDL 环境部署步骤请参考 **[VoxCPM AutoDL 全新环境部署完整指南](https://xcopter.cc/archives/2026/2026-4-16-voxcpm-autodl-deployment-guide.html)**（VoxCPM AutoDL 全新环境部署完整指南），此处仅列出关键要点：
 
 ### 4.1 环境概览
 
 | 项 | 说明 |
 |---|---|
-| 平台 | Autodl 云 GPU |
+| 平台 | AutoDL 算力云 GPU |
 | 操作系统 | Ubuntu 22.04 |
 | Python | 3.11（独立 conda 环境 `voxcpm`，不影响 base 环境的 Jupyter） |
 | PyTorch | 2.8.0+cu128 |
@@ -1195,7 +1195,7 @@ if __name__ == '__main__':
 
 ### 5.1 上传切片数据
 
-使用 WinSCP 将本地 `datasheet/` 目录下的所有文件（WAV 切片 + `train_data.jsonl`）上传到 Autodl：
+使用 WinSCP 将本地 `datasheet/` 目录下的所有文件（WAV 切片 + `train_data.jsonl`）上传到 AutoDL：
 
 ```
 /root/autodl-tmp/datasheet/
@@ -1269,7 +1269,7 @@ RuntimeError: [enforce fail at inline_container.cc:858] . PytorchStreamWriter fa
 tensorboard --logdir /root/autodl-tmp/logs/<日志目录> --port 6006
 ```
 
-通过 Autodl「自定义服务」或 SSH 隧道转发 6006 端口到本地浏览器。
+通过 AutoDL「自定义服务」或 SSH 隧道转发 6006 端口到本地浏览器。
 
 关注指标：
 | 指标 | 健康表现 |

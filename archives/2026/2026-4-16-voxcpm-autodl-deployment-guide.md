@@ -1,8 +1,8 @@
-# VoxCPM Autodl 全新环境部署完整指南
+# VoxCPM AutoDL 全新环境部署完整指南
 
-适用场景：**Autodl 云 GPU（Ubuntu 22.04 / 基础镜像带 PyTorch 2.8 + CUDA 12.8 / miniconda base 环境）**，目标是从零部署 VoxCPM（1.5 和 2 两个版本并存），可推理、可全量微调、可 LoRA 微调。
+适用场景：**AutoDL 算力云 GPU（Ubuntu 22.04 / 基础镜像带 PyTorch 2.8 + CUDA 12.8 / miniconda base 环境）**，目标是从零部署 VoxCPM（1.5 和 2 两个版本并存），可推理、可全量微调、可 LoRA 微调。
 
-本指南使用**独立 conda 环境**（名为 `voxcpm`，Python 3.11），不修改 Autodl 的 base 环境——Jupyter、TensorBoard 等预装工具完全不受影响。
+本指南使用**独立 conda 环境**（名为 `voxcpm`，Python 3.11），不修改 AutoDL 的 base 环境——Jupyter、TensorBoard 等预装工具完全不受影响。
 
 ---
 
@@ -10,7 +10,7 @@
 
 | 位置 | 内容 |
 |---|---|
-| `/root/miniconda3/` | conda 管理器 + base 环境（Python 3.12，Autodl 默认） |
+| `/root/miniconda3/` | conda 管理器 + base 环境（Python 3.12，AutoDL 默认） |
 | `/root/miniconda3/envs/voxcpm/` | **voxcpm 独立环境**（Python 3.11，VoxCPM 专用） |
 | `/root/VoxCPM/` | VoxCPM 源码（editable 安装，支持 v1.5 和 v2） |
 | `/root/models/VoxCPM2/` | VoxCPM2 基础模型权重（~10 GB） |
@@ -18,7 +18,7 @@
 | `/root/autodl-tmp/` | 训练数据、checkpoint、TensorBoard 日志等大件 |
 
 **两套 Python 并存**：
-- `conda activate base` → Python 3.12（Jupyter / TensorBoard / Autodl 内置工具）
+- `conda activate base` → Python 3.12（Jupyter / TensorBoard / AutoDL 内置工具）
 - `conda activate voxcpm` → Python 3.11（VoxCPM 推理 / 训练 / 数据处理）
 
 三个 sh 脚本（`1-run-webui.sh`、`2-run-train.sh`、`3-run-infer.sh`）开头会自动 `conda activate voxcpm`，你不需要手动切环境。
@@ -48,7 +48,7 @@ env | grep -i proxy
 python --version
 ```
 
-期望：`Python 3.12.x`（Autodl 基础镜像默认）
+期望：`Python 3.12.x`（AutoDL 基础镜像默认）
 
 ### 确认 conda 可用
 
@@ -71,7 +71,7 @@ source ~/.bashrc
 
 ### 1.1 初始化 conda shell
 
-Autodl 新开机后 `conda activate` 可能报 `Run 'conda init' before 'conda activate'`，需要先初始化：
+AutoDL 新开机后 `conda activate` 可能报 `Run 'conda init' before 'conda activate'`，需要先初始化：
 
 ```bash
 conda init
@@ -329,7 +329,7 @@ python -c "from funasr import AutoModel; AutoModel(model='iic/SenseVoiceSmall', 
 ### 10.1 测试 VoxCPM2
 
 ```bash
-python -c "from voxcpm import VoxCPM; import soundfile as sf; m = VoxCPM.from_pretrained('/root/models/VoxCPM2', load_denoiser=False); wav = m.generate(text='Hello, this is VoxCPM2 running on Autodl.', cfg_value=2.0, inference_timesteps=10); sf.write('/root/autodl-tmp/smoke_v2.wav', wav, m.tts_model.sample_rate); print('OK:', len(wav), 'samples')"
+python -c "from voxcpm import VoxCPM; import soundfile as sf; m = VoxCPM.from_pretrained('/root/models/VoxCPM2', load_denoiser=False); wav = m.generate(text='Hello, this is VoxCPM2 running on AutoDL.', cfg_value=2.0, inference_timesteps=10); sf.write('/root/autodl-tmp/smoke_v2.wav', wav, m.tts_model.sample_rate); print('OK:', len(wav), 'samples')"
 ```
 
 期望看到 `OK: XXXXXX samples`。第一次运行约 60–100 秒（torch.compile 预热）。
@@ -337,7 +337,7 @@ python -c "from voxcpm import VoxCPM; import soundfile as sf; m = VoxCPM.from_pr
 ### 10.2 测试 VoxCPM1.5（可选）
 
 ```bash
-python -c "from voxcpm import VoxCPM; import soundfile as sf; m = VoxCPM.from_pretrained('/root/models/VoxCPM1.5', load_denoiser=False); wav = m.generate(text='Hello, this is VoxCPM 1.5 running on Autodl.', cfg_value=2.0, inference_timesteps=10); sf.write('/root/autodl-tmp/smoke_v1_5.wav', wav, m.tts_model.sample_rate); print('OK:', len(wav), 'samples')"
+python -c "from voxcpm import VoxCPM; import soundfile as sf; m = VoxCPM.from_pretrained('/root/models/VoxCPM1.5', load_denoiser=False); wav = m.generate(text='Hello, this is VoxCPM 1.5 running on AutoDL.', cfg_value=2.0, inference_timesteps=10); sf.write('/root/autodl-tmp/smoke_v1_5.wav', wav, m.tts_model.sample_rate); print('OK:', len(wav), 'samples')"
 ```
 
 ### 人工感知验证
@@ -382,7 +382,7 @@ conda activate voxcpm
 python -c "from voxcpm import VoxCPM; ..."
 ```
 
-### Jupyter / TensorBoard / Autodl 内置工具
+### Jupyter / TensorBoard / AutoDL 内置工具
 
 **不需要做任何事**，登录后默认就在 base 环境，Jupyter 直接可用。
 
@@ -390,6 +390,6 @@ python -c "from voxcpm import VoxCPM; ..."
 
 ```bash
 conda activate voxcpm    # 切到 VoxCPM 专用环境
-conda activate base      # 切回 Autodl 默认环境
+conda activate base      # 切回 AutoDL 默认环境
 conda deactivate         # 退出当前环境（回到 base 或上一层）
 ```
