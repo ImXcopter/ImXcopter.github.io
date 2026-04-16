@@ -1150,7 +1150,7 @@ if __name__ == '__main__':
 
 ## 四、AutoDL 算力云 GPU 环境部署
 
-详细的 AutoDL 环境部署步骤请参考 **[VoxCPM AutoDL 全新环境部署完整指南](https://xcopter.cc/archives/2026/2026-4-16-voxcpm-autodl-deployment-guide.html)**（VoxCPM AutoDL 全新环境部署完整指南），此处仅列出关键要点：
+详细的 AutoDL 环境部署步骤请参考 **[VoxCPM AutoDL 全新环境部署完整指南](https://xcopter.cc/archives/2026/2026-4-16-voxcpm-autodl-deployment-guide.html)**，此处仅列出关键要点：
 
 ### 4.1 环境概览
 
