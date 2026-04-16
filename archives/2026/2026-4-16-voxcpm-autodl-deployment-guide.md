@@ -1037,9 +1037,6 @@ conda activate voxcpm
 python -c "from voxcpm import VoxCPM; ..."
 ```
 
-### Jupyter / TensorBoard / AutoDL 内置工具
-
-**不需要做任何事**，登录后默认就在 base 环境，Jupyter 直接可用。
 
 ### 切换环境速查
 
