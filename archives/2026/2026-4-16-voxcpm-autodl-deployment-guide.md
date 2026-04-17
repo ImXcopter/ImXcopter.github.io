@@ -887,7 +887,7 @@ echo "用 WinSCP 下载这个 wav 到本地听效果。"
 --------------------------------------------------------------------------------
 
 /root/
-  1-run-webui.sh          推理 WebUI 启动脚本
+  1-run-webui.sh          WebUI 启动脚本（VoxCPM2 推理 / VoxCPM1.5 推理 / LoRA 训练与推理）
   2-run-train.sh          微调训练启动脚本
   3-run-infer.sh          微调后推理脚本
 
@@ -902,19 +902,20 @@ echo "用 WinSCP 下载这个 wav 到本地听效果。"
   outputs/                推理输出的 wav 文件
 
 --------------------------------------------------------------------------------
-  脚本 1：推理 WebUI（1-run-webui.sh）
+  脚本 1：WebUI 启动器（1-run-webui.sh）
 --------------------------------------------------------------------------------
 
-功能：启动 Gradio 推理界面，可选 VoxCPM2 或 VoxCPM1.5。
+功能：启动 Gradio 界面，支持三种模式。
 
 运行方式：
   bash /root/1-run-webui.sh
 
-脚本会显示菜单让你选择模型版本：
-  1) VoxCPM2
-  2) VoxCPM1.5
+脚本会显示菜单让你选择：
+  1) VoxCPM2 推理 WebUI        — VoxCPM2 专属界面（Voice Design / Cloning 三种模式）
+  2) VoxCPM1.5 推理 WebUI      — VoxCPM1.5 专属界面（基础 TTS + Voice Cloning）
+  3) LoRA 训练与推理 WebUI      — LoRA 训练配置 + LoRA checkpoint 推理（支持 v1.5 和 v2）
 
-选完后自动加载模型并启动 WebUI，端口为 6006。
+选完后自动加载模型并启动 WebUI，端口统一为 6006。
 
 访问 WebUI 的方法（二选一）：
   方法 A：Autodl 控制台 -> 我的实例 -> 点"自定义服务"-> 自动打开浏览器
@@ -926,7 +927,8 @@ echo "用 WinSCP 下载这个 wav 到本地听效果。"
 
 注意事项：
   - 首次启动约 1-2 分钟（加载模型 + torch.compile 预热），后续启动约 30 秒
-  - 不需要手动开关代理，脚本已处理好
+  - VoxCPM2 和 VoxCPM1.5 使用不同的界面（功能不同），不要混用
+  - LoRA WebUI 的预训练模型路径可以在界面中手动修改
 
 --------------------------------------------------------------------------------
   脚本 2：微调训练（2-run-train.sh）
@@ -996,6 +998,7 @@ echo "用 WinSCP 下载这个 wav 到本地听效果。"
 -------------------------------  -----------------------------------------------
 听 VoxCPM2 原版音色              bash /root/1-run-webui.sh  (选 1)
 听 VoxCPM1.5 原版音色            bash /root/1-run-webui.sh  (选 2)
+LoRA 训练与推理界面              bash /root/1-run-webui.sh  (选 3)
 启动微调训练                      bash /root/2-run-train.sh
 测试训练出的 checkpoint           bash /root/3-run-infer.sh
 用 Jupyter                       直接用（base 环境，不受影响）
