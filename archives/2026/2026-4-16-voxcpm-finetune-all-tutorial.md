@@ -1491,10 +1491,8 @@ if __name__ == "__main__":
 ### 5.4 准备 yaml 配置文件
 
 在 `/root/autodl-tmp/datasheet/` 下放置一个 yaml 配置文件，文件名格式：
-- `voxcpm_finetune_all_v2.yaml` — VoxCPM2 全量微调
-- `voxcpm_finetune_all_v1_5.yaml` — VoxCPM1.5 全量微调
-- `voxcpm_finetune_lora_v2.yaml` — VoxCPM2 LoRA 微调
-- `voxcpm_finetune_lora_v1_5.yaml` — VoxCPM1.5 LoRA 微调
+- `voxcpm_finetune_all.yaml` — VoxCPM 全量微调
+- `voxcpm_finetune_lora.yaml` — VoxCPM LoRA 微调
 
 yaml 里需要填写的关键路径：
 - `pretrained_path`: 基础模型路径（如 `/root/models/VoxCPM2`）
@@ -1503,6 +1501,35 @@ yaml 里需要填写的关键路径：
 - `save_path`: checkpoint 输出目录（如 `/root/autodl-tmp/checkpoints/xxx`）
 - `tensorboard`: TensorBoard 日志目录（如 `/root/autodl-tmp/logs/xxx`）
 
+### 5.5 一个全量微调的 voxcpm_finetune_all.yaml 的文件示例：
+
+数据集有1306条，使用的是AutoDL的RTX PRO 6000进行的训练，数据盘扩容到了350GB。
+```
+pretrained_path: /root/models/VoxCPM2/
+train_manifest: /root/autodl-tmp/datasheet/train_data.jsonl
+val_manifest: /root/autodl-tmp/datasheet/val_data.jsonl
+sample_rate: 16000        # AudioVAE encoder input rate; must match audio_vae_config.sample_rate
+out_sample_rate: 48000    # AudioVAE decoder output rate; used for TensorBoard audio logging
+batch_size: 8
+grad_accum_steps: 2  # effective batch size = batch_size × grad_accum_steps = 16
+num_workers: 8
+num_iters: 3000
+log_interval: 10
+valid_interval: 150
+save_interval: 300
+learning_rate: 0.00001
+weight_decay: 0.01
+warmup_steps: 100
+max_steps: 3000
+max_batch_tokens: 8192
+max_grad_norm: 1.0        # gradient clipping max norm; 0 = disabled
+save_path: /root/autodl-tmp/checkpoints/finetune_all
+tensorboard: /root/autodl-tmp/logs/finetune_all
+lambdas:
+  loss/diff: 1.0
+  loss/stop: 1.0
+
+```
 ---
 
 ## 六、启动训练
