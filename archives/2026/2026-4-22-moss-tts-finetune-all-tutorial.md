@@ -21,11 +21,11 @@
 - ✅ AutoDL 实例（本文档实测：RTX PRO 6000 96GB / 25 核 Xeon 8470Q / 120GB 内存）
 - ✅ conda `moss-tts` 环境（Python 3.12 + torch 2.9.1+cu128 + transformers 5.0.0）
 - ✅ `/root/MOSS-TTS/` editable 源码
-- ✅ HF 缓存里已有 MOSS-Audio-Tokenizer（部署文档第 8.1 步 `HF_ENDPOINT=https://hf-mirror.com hf download OpenMOSS-Team/MOSS-Audio-Tokenizer` 已完成）
+- ✅ HF 缓存里已有 MOSS-Audio-Tokenizer（部署文档第 7.1 步 `HF_ENDPOINT=https://hf-mirror.com` 已持久化到 bashrc + 第 8.1 步 `hf download OpenMOSS-Team/MOSS-Audio-Tokenizer` 已完成）
 - ✅ 你要微调的那个业务模型的基础权重已下载到 `/root/autodl-tmp/models/<model-name>/`
 - ✅ `accelerate`、（可选）`deepspeed`、`wandb` 已装（即 `pip install -e ".[torch-runtime,finetune]"` 或 `finetune-deepspeed`）
 
-> **关于 codec 路径约定**：`sft.py` 的 `--codec-path` 传 HF 仓库 ID `OpenMOSS-Team/MOSS-Audio-Tokenizer`——`AutoModel.from_pretrained` 自动去 HF 缓存（`/root/hf_cache`）解析，**不走网络**。训练保存的 checkpoint 里 `processor_config.json` 也会记录这个 HF ID，推理加载 checkpoint 时同样命中缓存。
+> **关于 codec 路径约定**：`sft.py` 的 `--codec-path` 传 HF 仓库 ID `OpenMOSS-Team/MOSS-Audio-Tokenizer`——`AutoModel.from_pretrained` 加载时会对 `HF_ENDPOINT`（`hf-mirror.com`）发一次轻量 HEAD 请求做 ETag 校验，命中后读本地 `/root/hf_cache` 缓存，实际权重不走网络。训练保存的 checkpoint 里 `processor_config.json` 也会记录这个 HF ID，推理加载 checkpoint 时同样走"HEAD → 命中缓存"的路径。整个过程不需要代理、不需要 token。
 
 ---
 
@@ -1403,11 +1403,11 @@ python /path/to/segment_audio.py
 - `configuration_moss_tts.py`
 - `inference_utils.py`
 
-命令参考（走 hf-mirror 国内镜像，无需代理、无需 token）：
+命令参考（部署文档第 7.1 步已把 `HF_ENDPOINT=https://hf-mirror.com` 持久化到 bashrc，所以**直接跑**即可，走 hf-mirror 国内镜像，无需代理、无需 token）：
 
 ```bash
 conda activate moss-tts
-HF_ENDPOINT=https://hf-mirror.com python - <<'PY'
+python - <<'PY'
 from huggingface_hub import hf_hub_download
 for fn in ["processing_moss_tts.py","modeling_moss_tts.py","configuration_moss_tts.py","inference_utils.py"]:
     dst = hf_hub_download(repo_id="OpenMOSS-Team/MOSS-TTSD-v1.0", filename=fn,
@@ -1763,7 +1763,9 @@ bash /root/3-run-infer.sh
 
 **方法 B：手写 Python**（与根 README 的 quickstart 完全一致，只是把模型路径换成 checkpoint 目录）：
 
-> 这里 `AutoProcessor.from_pretrained(ckpt, ...)` **不触发** HF 网络——因为 `ckpt` 里 `processor_config.json` 的 `audio_tokenizer_name_or_path` 字段在训练时由 `sft.py --codec-path OpenMOSS-Team/MOSS-Audio-Tokenizer` 写入的就是这个 HF ID（见 `moss_tts_delay/finetuning/sft.py:350-353` 的 `copy_inference_assets`），而 HF 缓存里已经有这个 repo（部署文档第 8.1 步下的），所以 HF 直接从 `/root/hf_cache` 解析本地缓存，不联网。
+> **关于 `AutoProcessor.from_pretrained(ckpt, ...)` 的网络行为**：`ckpt` 里的 `processor_config.json` 的 `audio_tokenizer_name_or_path` 字段由 `sft.py --codec-path OpenMOSS-Team/MOSS-Audio-Tokenizer` 写入（见 `moss_tts_delay/finetuning/sft.py:350-353` 的 `copy_inference_assets`）。加载时 HF 会对 `HF_ENDPOINT`（部署文档第 7.1 步已持久化为 `hf-mirror.com`）发一次 HEAD 请求做 ETag 校验 → 命中 `/root/hf_cache` 里已下好的 Audio-Tokenizer → 读本地文件。整个 HEAD 走国内镜像 CDN，稳定 && 不占费时。
+> 
+> **如果推理时报 `Connection error` 或 `Failed to connect to huggingface.co`**：一定是 `HF_ENDPOINT` 没生效（env 里缺失或 shell 没 `source ~/.bashrc`）。`env | grep HF_ENDPOINT` 自查，修复后重跑。
 
 ```python
 # 示例：加载 MOSS-TTS 微调 checkpoint 做推理
