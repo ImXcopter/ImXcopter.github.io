@@ -279,8 +279,11 @@
 | 配置项 | 默认值 | 说明 |
 |---|---|---|
 | `VOXCPM_FT_PROJECT_PATH` | (需修改) | 虚拟环境项目路径 |
-| `AUDIO_FILENAME` | (需修改) | 当前要处理的音频文件名 |
-| `SRT_FILENAME` | (需修改) | 对应的 SRT 字幕文件名 |
+| `AUDIO_DIR` | `""`（空字符串） | **音频 + SRT 所在目录的绝对路径**；留空则回退为"脚本所在目录"（保持兼容） |
+| `OUT_DIR` | `""`（空字符串） | **切片 WAV + `train_data.jsonl` 的输出目录**；留空则默认写到 `<AUDIO_DIR>/<OUT_SUBDIR>`（和历史行为一致） |
+| `OUT_SUBDIR` | `"datasheet"` | 仅当 `OUT_DIR` 为空时使用；作为 `AUDIO_DIR` 下的子目录名 |
+| `AUDIO_FILENAME` | (需修改) | 当前要处理的音频文件名（文件名，位于 `AUDIO_DIR` 下） |
+| `SRT_FILENAME` | (需修改) | 对应的 SRT 字幕文件名（文件名，位于 `AUDIO_DIR` 下） |
 | `ENABLE_NORMALIZATION` | `True` | 是否启用响度归一化 |
 | `NORMALIZATION_METHOD` | `"loudnorm"` | 归一化方法（loudnorm / peak） |
 | `TARGET_LUFS` | `-23.0` | EBU R128 目标响度 |
@@ -294,9 +297,10 @@
 
 ### 3.3 使用方法
 
-1. 将 WAV 音频文件和对应的 SRT 文件放在脚本同目录下
-2. 修改脚本顶部的 `AUDIO_FILENAME` 和 `SRT_FILENAME`
-3. 运行脚本
+1. **设置 `AUDIO_DIR`** 为 WAV + SRT 所在文件夹的绝对路径（例如 `r"D:\TTS_Training\raw_audio"`）。留空字符串 `""` 则回退为"脚本所在目录"——这时把 WAV 和 SRT 放在脚本同目录下也能工作，与以往行为一致
+2. 可选：设置 `OUT_DIR`（切片 WAV + `train_data.jsonl` 的输出目录）。留空则默认写到 `<AUDIO_DIR>/datasheet/`
+3. 修改脚本顶部的 `AUDIO_FILENAME` 和 `SRT_FILENAME`（文件名，不是完整路径，位于 `AUDIO_DIR` 下）
+4. 运行脚本
 
 处理多个音频文件时，依次修改文件名并重新运行——脚本支持追加模式，会自动续接序号和 JSONL。
 
@@ -331,7 +335,18 @@ import subprocess
 # 虚拟环境项目路径（用于环境检查和模型下载）
 VOXCPM_FT_PROJECT_PATH = r"D:\Project\TTS_ASR_Tools\VoxCPM_FT"
 
-# 要处理的音频和 SRT 文件（脚本所在目录下）
+# 音频 + SRT 所在目录（绝对路径）
+# 留空字符串 "" 则回退为"脚本所在目录"（保持历史兼容行为，音频和脚本放一起）
+# 例如: r"D:\TTS_Training\raw_audio"  或  "/Users/me/tts/audio"
+AUDIO_DIR = ""
+
+# 输出目录：切片 WAV + train_data.jsonl 写入的位置
+# 留空字符串 "" 则默认使用 <AUDIO_DIR>/<OUT_SUBDIR>（和历史行为一致）
+# 例如: r"D:\TTS_Training\datasheet"
+OUT_DIR = ""
+OUT_SUBDIR = "datasheet"             # 仅当 OUT_DIR 为空时作为 AUDIO_DIR 下的子目录名
+
+# 要处理的音频和 SRT 文件（文件名，位于 AUDIO_DIR 下）
 AUDIO_FILENAME = "01.wav"            # 音频文件名
 SRT_FILENAME = "01.srt"              # SRT 字幕文件名
 
@@ -369,6 +384,18 @@ def clear_screen() -> None:
 def get_script_dir() -> Path:
     """获取脚本所在目录"""
     return Path(__file__).parent.resolve()
+
+def resolve_paths() -> Tuple[Path, Path]:
+    """解析 AUDIO_DIR / OUT_DIR 两个配置项；空字符串时回退到原始行为。
+
+    Returns:
+        Tuple[Path, Path]: (audio_dir, out_dir)
+          - audio_dir: AUDIO_DIR 有值则用它；否则用脚本所在目录（兼容原始行为）
+          - out_dir:   OUT_DIR 有值则用它；否则用 audio_dir / OUT_SUBDIR
+    """
+    audio_dir = Path(AUDIO_DIR).expanduser().resolve() if AUDIO_DIR else get_script_dir()
+    out_dir = Path(OUT_DIR).expanduser().resolve() if OUT_DIR else (audio_dir / OUT_SUBDIR)
+    return audio_dir, out_dir
 
 def measure_rms_dbfs(audio_array: Any) -> float:
     """计算音频数组的 RMS 能量（dBFS）"""
@@ -560,22 +587,29 @@ def get_last_segment_number(jsonl_path: Path) -> int:
 
 def check_prerequisites() -> bool:
     """检查前置条件：文件存在性与配置项合法性"""
-    script_dir = get_script_dir()
+    audio_dir, _ = resolve_paths()
+
+    # 检查 AUDIO_DIR 存在
+    if not audio_dir.exists():
+        print(f"错误：AUDIO_DIR 不存在")
+        print(f"路径：{audio_dir}")
+        print(f"请检查配置常量 AUDIO_DIR 是否正确（留空字符串则使用脚本所在目录）")
+        return False
 
     # 检查音频文件
-    audio_path = script_dir / AUDIO_FILENAME
+    audio_path = audio_dir / AUDIO_FILENAME
     if not audio_path.exists():
         print(f"错误：音频文件不存在")
         print(f"路径：{audio_path}")
-        print(f"请检查配置常量 AUDIO_FILENAME 是否正确")
+        print(f"请检查配置常量 AUDIO_DIR / AUDIO_FILENAME 是否正确")
         return False
 
     # 检查 SRT 文件
-    srt_path = script_dir / SRT_FILENAME
+    srt_path = audio_dir / SRT_FILENAME
     if not srt_path.exists():
         print(f"错误：SRT 文件不存在")
         print(f"路径：{srt_path}")
-        print(f"请检查配置常量 SRT_FILENAME 是否正确")
+        print(f"请检查配置常量 AUDIO_DIR / SRT_FILENAME 是否正确")
         return False
 
     # 配置项合法性：尾静音硬上限（VoxCPM 官方警告 > 0.5s 会导致生成停不下来）
@@ -1072,10 +1106,12 @@ def run_segment_audio() -> None:
 
 def execute_segmentation() -> None:
     """执行音频切分的实际逻辑（在虚拟环境中运行）"""
-    # 获取脚本所在目录
-    script_dir = get_script_dir()
+    # 解析路径：AUDIO_DIR / OUT_DIR 为空时回退到脚本所在目录（兼容历史行为）
+    audio_dir, out_dir = resolve_paths()
 
-    print(f"📁 工作目录: {script_dir}")
+    print(f"📁 脚本目录: {get_script_dir()}")
+    print(f"📁 音频目录: {audio_dir}")
+    print(f"📁 输出目录: {out_dir}")
     print(f"📁 虚拟环境: {VOXCPM_FT_PROJECT_PATH}")
     print()
 
@@ -1103,9 +1139,10 @@ def execute_segmentation() -> None:
     print()
 
     # 设置路径
-    audio_path = script_dir / AUDIO_FILENAME
-    srt_path = script_dir / SRT_FILENAME
-    data_dir = script_dir / "datasheet"
+    audio_path = audio_dir / AUDIO_FILENAME
+    srt_path = audio_dir / SRT_FILENAME
+    data_dir = out_dir
+    data_dir.mkdir(parents=True, exist_ok=True)
     jsonl_path = data_dir / "train_data.jsonl"
 
     # 检查追加模式
