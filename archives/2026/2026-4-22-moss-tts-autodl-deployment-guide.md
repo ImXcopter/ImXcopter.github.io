@@ -293,7 +293,7 @@ HF_ENDPOINT=https://hf-mirror.com
 
 > 这几条命令只操作 shell 环境变量和目录，**和 conda 环境无关**——无论在 base 还是 moss-tts 下跑都一样。`HF_HOME` / `HF_ENDPOINT` 是全局环境变量，设一次后所有 conda 环境共用。下一步跑 `pip install` / `hf download` 才需要先 `conda activate moss-tts`。
 >
-> **为什么 `HF_ENDPOINT` 也要持久化？** 第一版文档把它写在下载命令前置（`HF_ENDPOINT=xxx hf download ...`）只让它对一条命令生效，想保持系统干净。后来实测发现：**每次实例重启后，推理 / 验证模型 / 业务模型内部加载 tokenizer 都会触发 HEAD 到 HF**（这是 HuggingFace 客户端的 ETag 校验机制），不持久化就要每次手动 export 一次，体验很差。持久化一条路由环境变量不写入任何账号信息，纯净无副作用。
+> **为什么 `HF_ENDPOINT` 也要持久化？** 把它写在下载命令前置（`HF_ENDPOINT=xxx hf download ...`）只让它对一条命令生效，想保持系统干净。但是实测发现：**每次实例重启后，推理 / 验证模型 / 业务模型内部加载 tokenizer 都会触发 HEAD 到 HF**（这是 HuggingFace 客户端的 ETag 校验机制），不持久化就要每次手动 export 一次，体验很差。持久化一条路由环境变量不写入任何账号信息，纯净无副作用。
 
 ### 7.2 代理策略说明
 
