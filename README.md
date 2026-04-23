@@ -3,6 +3,8 @@ Xcopter's Blog
 ---
 ## 2026
 
+- [MOSS-TTS 家族 AutoDL 全新环境部署完整指南](archives/2026/2026-4-22-moss-tts-autodl-deployment-guide.md)
+- [MOSS-TTS 家族全量微调完整指南](archives/2026/2026-4-22-moss-tts-finetune-all-tutorial.md)
 - [VoxCPM AutoDL 全新环境部署完整指南](archives/2026/2026-4-16-voxcpm-autodl-deployment-guide.md)
 - [VoxCPM 全量微调完整指南](archives/2026/2026-4-16-voxcpm-finetune-all-tutorial.md)
 
