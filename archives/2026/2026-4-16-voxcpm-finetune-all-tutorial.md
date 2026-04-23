@@ -278,7 +278,7 @@
 
 | 配置项 | 默认值 | 说明 |
 |---|---|---|
-| `VOXCPM_FT_PROJECT_PATH` | (需修改) | 虚拟环境项目路径 |
+| `TTS_SFT_PROJECT_PATH` | (需修改) | 虚拟环境项目路径 |
 | `AUDIO_DIR` | `""`（空字符串） | **音频 + SRT 所在目录的绝对路径**；留空则回退为"脚本所在目录"（保持兼容） |
 | `OUT_DIR` | `""`（空字符串） | **切片 WAV + `train_data.jsonl` 的输出目录**；留空则默认写到 `<AUDIO_DIR>/<OUT_SUBDIR>`（和历史行为一致） |
 | `OUT_SUBDIR` | `"datasheet"` | 仅当 `OUT_DIR` 为空时使用；作为 `AUDIO_DIR` 下的子目录名 |
@@ -333,7 +333,7 @@ import subprocess
 # ============================================================================
 
 # 虚拟环境项目路径（用于环境检查和模型下载）
-VOXCPM_FT_PROJECT_PATH = r"D:\Project\TTS_ASR_Tools\VoxCPM_FT"
+TTS_SFT_PROJECT_PATH = r"D:\Project\TTS_ASR_Tools\TTS_SFT"
 
 # 音频 + SRT 所在目录（绝对路径）
 # 留空字符串 "" 则回退为"脚本所在目录"（保持历史兼容行为，音频和脚本放一起）
@@ -1050,11 +1050,11 @@ def segment_audio_with_vad(
 def run_segment_audio() -> None:
     """执行音频切分（自动启动虚拟环境）"""
     # 检查虚拟环境目录是否存在
-    voxcpm_ft_path = Path(VOXCPM_FT_PROJECT_PATH)
+    voxcpm_ft_path = Path(TTS_SFT_PROJECT_PATH)
     if not voxcpm_ft_path.exists():
         print(f"错误：VoxCPM_FT 项目目录不存在")
         print(f"路径：{voxcpm_ft_path}")
-        print(f"请检查配置常量 VOXCPM_FT_PROJECT_PATH 是否正确")
+        print(f"请检查配置常量 TTS_SFT_PROJECT_PATH 是否正确")
         print(f"程序终止！")
         sys.exit(1)
 
@@ -1112,7 +1112,7 @@ def execute_segmentation() -> None:
     print(f"📁 脚本目录: {get_script_dir()}")
     print(f"📁 音频目录: {audio_dir}")
     print(f"📁 输出目录: {out_dir}")
-    print(f"📁 虚拟环境: {VOXCPM_FT_PROJECT_PATH}")
+    print(f"📁 虚拟环境: {TTS_SFT_PROJECT_PATH}")
     print()
 
     # 检查前置条件
@@ -1178,7 +1178,7 @@ def execute_segmentation() -> None:
     print("加载 Silero VAD 模型...")
 
     # 设置 Silero VAD 模型下载目录
-    voxcpm_ft_path = Path(VOXCPM_FT_PROJECT_PATH)
+    voxcpm_ft_path = Path(TTS_SFT_PROJECT_PATH)
     models_dir = voxcpm_ft_path / "models"
     models_dir.mkdir(parents=True, exist_ok=True)
 

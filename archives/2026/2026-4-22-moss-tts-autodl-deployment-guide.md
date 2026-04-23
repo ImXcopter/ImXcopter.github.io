@@ -1,4 +1,4 @@
-# MOSS-TTS 家族 AutoDL 全新环境部署完整指南
+# MOSS-TTS AutoDL 全新环境部署完整指南
 
 适用场景：**AutoDL 算力云 GPU（Ubuntu 22.04 / 基础镜像带 PyTorch 2.8 + CUDA 12.8 / miniconda base 环境） / RTX PRO 6000 96GB**，目标是从零部署 **MOSS-TTS 家族全部 6 个业务模型**（MOSS-TTS / MOSS-TTS-Local-Transformer / MOSS-TTSD / MOSS-VoiceGenerator / MOSS-SoundEffect / MOSS-TTS-Realtime），一次部署，可推理、可全量微调。
 
