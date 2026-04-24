@@ -1567,15 +1567,17 @@ head -1 /root/autodl-tmp/datasets/train_with_codes.jsonl | python -c "import sys
 
 ### 7.3 单卡 96GB 资源策略
 
-| 模型 | 参数 | 单卡 96GB 全量可行性 | 推荐 accelerate 配置 |
-|---|---|---|---|
-| MOSS-TTS-Local-Transformer | 1.7B | ✅ 轻松 | `accelerate launch --num_processes 1 --mixed_precision bf16` |
-| MOSS-VoiceGenerator | 1.7B | ✅ 轻松 | 同上 |
-| MOSS-TTS-Realtime | 1.7B | ✅ 轻松 | 同上 |
-| **MOSS-TTS** | 8B | ✅ 可行（bf16 + gradient_checkpointing） | 同上 |
-| **MOSS-TTSD-v1.0** | 8B | ✅ 可行（同上 + `--n-vq 16`） | 同上 |
-| **MOSS-SoundEffect** | 8B | ✅ 可行（同上） | 同上 |
+| 模型 | 参数 | 单卡 96GB 全量可行性 | 实测峰值显存 | 推荐 accelerate 配置 |
+|---|---|---|---|---|
+| MOSS-TTS-Local-Transformer | 1.7B | ✅ 轻松 | **~30 GB（30139 MB，实测）** | `accelerate launch --num_processes 1 --mixed_precision bf16` |
+| MOSS-VoiceGenerator | 1.7B | ✅ 轻松 | 参考 1.7B，约 30 GB | 同上 |
+| MOSS-TTS-Realtime | 1.7B | ✅ 轻松 | 参考 1.7B，约 30 GB | 同上 |
+| **MOSS-TTS** | 8B | ✅ 可行（bf16 + gradient_checkpointing） | **~83 GB（84435 MB，实测）** | 同上 |
+| **MOSS-TTSD-v1.0** | 8B | ✅ 可行（同上 + `--n-vq 16`） | 参考 8B，约 80 GB（n_vq=16 会略低） | 同上 |
+| **MOSS-SoundEffect** | 8B | ✅ 可行（同上） | 参考 8B，约 80 GB | 同上 |
 
+> **实测条件**：AutoDL RTX PRO 6000 96GB / 25 核 Xeon 8470Q / 120GB 内存，超参取本文各 §7.4–7.8 命令的默认组合——`--per-device-batch-size 1 --gradient-accumulation-steps 8 --mixed-precision bf16 --channelwise-loss-weight 1,32 --gradient-checkpointing`。数据为单说话人微调，切片时长 4–28 秒。**显存会随数据切片的最长样本时长而波动**（单样本越长峰值越高），上述是跑一整个 epoch 的峰值。
+>
 > **关于 ZeRO-3**：仓库自带的 `configs/accelerate_zero3_8b.yaml` 默认 `num_processes: 8`（多卡场景），在单卡 96GB 上**不需要用**。如果你跑 8B 时显存紧张，优先加 `--gradient-checkpointing`；如果仍然不够，再手工改一份 zero3 yaml（把 `num_processes` 改 1，把 `offload_optimizer_device` / `offload_param_device` 改成 `cpu`），利用 120GB 内存做 CPU offload。
 
 ### 7.4 MOSS-TTS（8B）全量微调命令（单卡）
@@ -1748,7 +1750,14 @@ wandb login   # 在浏览器粘贴 API key
 watch -n 2 nvidia-smi
 ```
 
-单卡 96GB 跑 8B 微调典型占用：`70–90 GB`（开 gradient_checkpointing 后显著下降）。
+**单卡 RTX PRO 6000 96GB 实测峰值**（bf16 + gradient_checkpointing + per_device_batch_size 1 + gradient_accumulation 8，详细条件见 §7.3）：
+
+| 模型 | 实测峰值显存 |
+|---|---|
+| MOSS-TTS-Local-Transformer（1.7B） | **30139 MB（~29.4 GB）** |
+| MOSS-TTS（8B） | **84435 MB（~82.5 GB）** |
+
+8B 模型开 `--gradient-checkpointing` 后显著下降；若关掉会直接 OOM。1.7B 模型即使不开 gradient_checkpointing 也够用，加上纯粹是留安全余量。
 
 ---
 
