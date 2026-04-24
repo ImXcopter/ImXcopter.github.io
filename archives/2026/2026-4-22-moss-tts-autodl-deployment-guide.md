@@ -1105,6 +1105,15 @@ Audio-Tokenizer: OpenMOSS-Team/MOSS-Audio-Tokenizer
 - 8B 模型（MOSS-TTS / MOSS-TTSD / MOSS-SoundEffect）：首次加载 + 生成约 60–120 秒
 - 1.7B 模型（Local / VoiceGenerator / Realtime）：首次加载 + 生成约 20–40 秒
 
+**显存占用预期**（单卡 RTX PRO 6000 96GB，bf16 + `attn=flash_attention_2`，实测）：
+
+| 模型 | 推理峰值显存 |
+|---|---|
+| MOSS-TTS-Local-Transformer（1.7B） | **13829 MB（~13.5 GB）** |
+| MOSS-TTS（8B） | **24447 MB（~23.9 GB）** |
+
+（8B 推理 ≈ 24 GB / 1.7B 推理 ≈ 14 GB；两者都远低于 96GB 上限，**同时起 3 个 8B 推理也放得下**，富余空间可用于 KV 缓存或大 batch。）
+
 用 WinSCP 把 `/root/autodl-tmp/smoke/` 下的 wav 下到本地听，应该都是清晰的目标语音 / 音效 / 对话。
 
 ### ⚠️ 修改脚本的注意事项
@@ -1881,8 +1890,13 @@ A: 官方在 moss_tts_realtime/infer.py 注释里明确写了：
    改用 --attn_implementation sdpa 即可。1-run-webui.sh 里启动 Realtime 时已经强制 sdpa。
 
 Q: 8B 模型推理显存不够
-A: 96GB RTX PRO 6000 跑 8B bf16 正常。如果还是爆，检查是不是没关掉其它 Python 进程，
-   或者尝试 attn_implementation="sdpa"（不用 flash-attn）。
+A: 96GB RTX PRO 6000 跑 8B bf16 完全够用，实测峰值约 24 GB（MOSS-TTS 8B，24447 MB，
+   bf16 + flash_attention_2）；1.7B 推理实测约 14 GB（13829 MB）。
+   96GB 富余很多，如果你实际测下来跑不起来，通常是这些原因:
+     - 没关掉其它 Python 进程（先 nvidia-smi 看有没有残留进程占显存）
+     - 多个模型同时加载到同一张卡（冒烟测试脚本每跑一个就 torch.cuda.empty_cache，正常无此问题）
+     - attn_implementation 配成 eager 了（改成 "sdpa" 或 "flash_attention_2"）
+   实测条件见部署文档第 10 步 "显存占用预期" 表格。
 
 Q: 想只部署其中一两个模型省显存/空间
 A: 不下载对应的 /root/autodl-tmp/models/<ModelName> 即可，sh 脚本会自动检测目录是否存在并报错提示。
