@@ -75,9 +75,9 @@ https://example.com/private-dd/
 脚本会自动拼接文件名：
 
 ```text
-https://example.com/private-dd/Disk_Windows_Server_2022_DataCenter_CN_v2.12.vhd.gz
-https://example.com/private-dd/zh-cn_windows10_ltsc.xz
-https://example.com/private-dd/guajibao-winsrv2022-data-x64-cn-efi.vhd.gz
+https://example.com/private-dd/cxthhhhh.com_Windows_Server_2022_DataCenter_CN_v2.12.vhd.gz
+https://example.com/private-dd/Teddysun.com_Windows10_LTSC_CN.xz
+https://example.com/private-dd/nat.ee_Windows%2010_Enterprise_LTSC_2021_x64_CN_UEFI.vhd.gz
 ```
 
 规则：
@@ -88,6 +88,7 @@ https://example.com/private-dd/guajibao-winsrv2022-data-x64-cn-efi.vhd.gz
 - 输入前缀时只校验 URL 格式和目录路径
 - 选择系统编号后，脚本只会检查你最终选择的那个镜像文件是否存在
 - 如果该文件无法访问，会提示错误并停止安装；不要求其它未选择的镜像也存在
+- 文件名里的空格会在下载 URL 中自动按 `%20` 处理
 
 ## 系统选择
 
@@ -131,15 +132,15 @@ https://example.com/private-dd/guajibao-winsrv2022-data-x64-cn-efi.vhd.gz
 如果你只准备安装某一个系统，只需要上传对应的那一个文件。下面是菜单编号对应的内置文件名：
 
 ```text
-Disk_Windows_Server_2022_DataCenter_CN_v2.12.vhd.gz
-Disk_Windows_Server_2022_DataCenter_CN_v2.12_UEFI.vhd.gz
-zh-cn_windows10_ltsc.xz
-zh-cn_win10_ltsc_uefi.xz
-guajibao-win10-ent-ltsc-2021-x64-cn.vhd.gz
-guajibao-win10-ent-ltsc-2021-x64-cn-aliyun.vhd.gz
-guajibao-win10-ent-ltsc-2021-x64-cn-efi.vhd.gz
-guajibao-winsrv2022-data-x64-cn.vhd.gz
-guajibao-winsrv2022-data-x64-cn-efi.vhd.gz
+1  cxthhhhh.com_Windows_Server_2022_DataCenter_CN_v2.12.vhd.gz
+2  cxthhhhh.com_Windows_Server_2022_DataCenter_CN_v2.12_UEFI.vhd.gz
+3  Teddysun.com_Windows10_LTSC_CN.xz
+4  Teddysun.com_Windows10_LTSC_CN_UEFI.xz
+5  nat.ee_Windows 10_Enterprise_LTSC_2021_x64_CN.vhd.gz
+6  nat.ee_Windows 10_Enterprise_LTSC_2021_x64_CN_aliyun.vhd.gz
+7  nat.ee_Windows 10_Enterprise_LTSC_2021_x64_CN_UEFI.vhd.gz
+8  nat.ee_Windows_Server_2022_DataCenter_x64_CN.vhd.gz
+9  nat.ee_Windows_Server_2022_DataCenter_x64_CN_UEFI.vhd.gz
 ```
 
 ## 自定义镜像
