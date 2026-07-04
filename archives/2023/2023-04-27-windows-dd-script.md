@@ -2,8 +2,6 @@
 
 精简版 DD Windows 重装脚本，适合需要快速把 VPS 重装为常用 Windows 镜像的场景。
 
-本脚本基于 `fcurrk/reinstall` 的 `NewReinstall.sh` 改造，只保留常用 Windows 镜像、自定义镜像、网络检测、DHCP/手动 IP、镜像目录前缀校验、所选镜像文件校验和 DD 安装流程；已去除 CN 模式和不使用的系统菜单。
-
 ## 安装前提组件
 
 建议先进入 `screen`，避免 SSH 断开导致操作中断。
