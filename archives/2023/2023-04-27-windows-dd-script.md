@@ -1,4 +1,4 @@
-# 一键 DD Windows 脚本
+# DD Windows 一键安装脚本
 
 精简版 DD Windows 重装脚本，适合需要快速把 VPS 重装为常用 Windows 镜像的场景。
 
@@ -37,13 +37,13 @@ apt update -y && apt dist-upgrade -y
 ## 使用方法
 
 ```bash
-wget -O DDinstall.sh https://raw.githubusercontent.com/ImXcopter/DDinstall/main/DDinstall.sh && chmod +x DDinstall.sh && bash DDinstall.sh
+wget -O dd-windows.sh https://raw.githubusercontent.com/ImXcopter/dd-windows/main/dd-windows.sh && chmod +x dd-windows.sh && bash dd-windows.sh
 ```
 
 如果 VPS 的 CA 证书环境过旧，可以使用：
 
 ```bash
-wget --no-check-certificate -O DDinstall.sh https://raw.githubusercontent.com/ImXcopter/DDinstall/main/DDinstall.sh && chmod +x DDinstall.sh && bash DDinstall.sh
+wget --no-check-certificate -O dd-windows.sh https://raw.githubusercontent.com/ImXcopter/dd-windows/main/dd-windows.sh && chmod +x dd-windows.sh && bash dd-windows.sh
 ```
 
 ![](/static/2023/2023-04-27-windows-dd-script_001.png)
