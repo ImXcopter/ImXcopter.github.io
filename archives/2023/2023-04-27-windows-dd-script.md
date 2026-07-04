@@ -106,8 +106,8 @@ https://your-domain.example/folder_name/nat.ee_Windows%2010_Enterprise_LTSC_2021
 7  Windows 10 LTSC Lite [X64-UEFI-nat.ee]
 8  Windows Server 2022 Lite [X64-Legacy-nat.ee]
 9  Windows Server 2022 Lite [X64-UEFI-nat.ee]
-99 Custom image
-0  Exit
+99 自定义镜像
+0 退出
 ```
 
 选择系统后，脚本会显示对应默认密码，确认后开始调用 `InstallNET.sh` 执行 DD。
@@ -145,7 +145,7 @@ https://your-domain.example/folder_name/nat.ee_Windows%2010_Enterprise_LTSC_2021
 
 ## 自定义镜像
 
-选择 `99 Custom image` 时，可以直接输入完整镜像 URL，不使用上面的固定文件名列表。
+选择 `99 自定义镜像` 时，可以直接输入完整镜像 URL，不使用上面的固定文件名列表。
 
 适合临时测试其他 DD 镜像，或者不想使用内置 9 个文件名的情况。
 
@@ -179,10 +179,10 @@ mkdir /boot/grub2 && grub-mkconfig -o /boot/grub2/grub.cfg
 2. 根据系统提示用户名和密码，进入救援系统。用 root 用户 SSH 登录后执行：
 
 ```bash
-wget -O- DD download URL | gunzip | dd of=/dev/sda
+wget -O- DD镜像下载链接 | gunzip | dd of=/dev/sda
 ```
 
-注意：`DD download URL` 为 DD 镜像下载链接，`/dev/sda` 为第一启动盘。
+注意：`DD镜像下载链接` 为 DD 镜像文件的下载地址，`/dev/sda` 为第一启动盘。
 
 3. 等待程序跑完后输入 `reboot` 重启服务器。
 4. 重启后即可尝试远程桌面连接。
