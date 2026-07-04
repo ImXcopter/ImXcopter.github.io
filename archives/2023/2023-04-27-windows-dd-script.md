@@ -54,26 +54,27 @@ wget --no-check-certificate -O DDinstall.sh https://raw.githubusercontent.com/Im
 
 DD 重装后能否联网，很大程度取决于这里的网络配置是否正确。
 
-## 镜像目录前缀
+## 镜像 URL 前缀
 
 为了避免把真实镜像目录公开在 GitHub，脚本里只保留镜像文件名，不写死完整下载地址。
 
-运行脚本后会要求输入镜像文件所在目录：
+选择内置系统编号后，脚本会要求输入这个镜像文件所在的 URL 前缀：
 
 ```text
-Image file URL directory prefix (example: https://xxx.com/private-dd/):
+请输入镜像目录前缀（将自动拼接：文件名，例如 http://file.xcopter.cc/ 或 https://example.com/private-dd/）:
 ```
 
-你需要输入包含目录路径的 URL，例如：
+你可以输入域名根路径，也可以输入带目录的路径，例如：
 
 ```text
+http://file.xcopter.cc/
 https://example.com/private-dd/
 ```
 
-脚本会自动拼接文件名：
+脚本会把你选择的编号对应文件名拼接到前缀后：
 
 ```text
-https://example.com/private-dd/cxthhhhh.com_Windows_Server_2022_DataCenter_CN_v2.12.vhd.gz
+http://file.xcopter.cc/cxthhhhh.com_Windows_Server_2022_DataCenter_CN_v2.12.vhd.gz
 https://example.com/private-dd/Teddysun.com_Windows10_LTSC_CN.xz
 https://example.com/private-dd/nat.ee_Windows%2010_Enterprise_LTSC_2021_x64_CN_UEFI.vhd.gz
 ```
@@ -81,10 +82,10 @@ https://example.com/private-dd/nat.ee_Windows%2010_Enterprise_LTSC_2021_x64_CN_U
 规则：
 
 - 必须以 `http://` 或 `https://` 开头
-- 必须包含目录路径，不能只填 `https://example.com`
 - 末尾没有 `/` 会自动补齐
-- 输入前缀时只校验 URL 格式和目录路径
-- 选择系统编号后，脚本只会检查你最终选择的那个镜像文件是否存在
+- 可以只填域名根路径，例如 `http://file.xcopter.cc`
+- 选择系统编号后，脚本才会询问这个镜像的 URL 前缀
+- 脚本只会检查你最终选择的那个镜像文件是否存在
 - 如果该文件无法访问，会提示错误并停止安装；不要求其它未选择的镜像也存在
 - 文件名里的空格会在下载 URL 中自动按 `%20` 处理
 
